@@ -1,0 +1,11 @@
+[
+  {
+    "storeId": "001",
+    "storeName": "우리치킨",
+    "category": "치킨",
+    "dong": "역삼동",
+    "lat": 37.5006,
+    "lng": 127.0364,
+    "discount": 1000
+  }
+]

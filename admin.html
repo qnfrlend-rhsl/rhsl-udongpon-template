@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>관리자 페이지</title>
+
+  <link rel="manifest" href="./manifest-admin.json">
+  <link rel="icon" href="./logo1.png">
+  <link rel="apple-touch-icon" href="./logo1.png">
+  <meta name="theme-color" content="#ff6b35">
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: #f5f5f5;
+    }
+
+    header {
+      background: linear-gradient(to bottom right, #9233a5,  #ff6b35);
+      color: white;
+      padding: 12px;
+      text-align: center;
+    }
+
+    header h1 {
+      margin: 5px 0;
+      font-size: 28px;
+    }
+
+    header p {
+      margin: 0;
+      line-height: 1.4;
+      font-size: 14px;
+    }
+
+    .container {
+      padding: 16px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: bold;
+    }
+
+    select, input {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 10px;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+    }
+
+    button {
+      padding: 10px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-bottom: 10px;
+    }
+
+    .btn-add {
+      background: #ff6b35;
+      color: white;
+      width: 100%;
+    }
+
+    .btn-edit {
+      background: #3498db;
+      color: white;
+      margin-right: 5px;
+    }
+
+    .btn-delete {
+      background: #e74c3c;
+      color: white;
+    }
+
+    .card {
+      background: white;
+      padding: 5px;
+      border-radius: 10px;
+      margin: 2px;
+      max-width: 260px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+      display: inline-block;
+      vertical-align: top;
+
+      font-size: 11px;   /* 👈 여기 추가 */
+    }
+
+    .card b {
+      font-size: 12px;   /* 👈 추가 */
+    }
+
+    .card button {
+      font-size: 11px;    /* 👈 추가 */
+      padding: 5px 7px;  /* 👈 버튼 작게 */
+    }
+
+    .status {
+      font-size: 9px;
+      padding: 2px 6px;
+      border-radius: 6px;
+      display: inline-block;
+      margin-top: 2px;
+    }
+
+    .active {
+      background: #e7f7ea;
+      color: #1b8a3c;
+    }
+
+    .expired {
+      background: #ffe7e7;
+      color: #c0392b;
+    }
+
+    .paid {
+      background: #e8f0ff;
+      color: #2c5cc5;
+    }
+
+    hr {
+      margin: 20px 0;
+    }
+
+  /*
+.event-card {
+  border: 2px solid #ff3b3b;
+  box-shadow: 0 0 12px rgba(255, 59, 59, 0.4);
+  transform: scale(1.02);
+  animation: pulseEvent 1.5s infinite;
+}
+
+@keyframes pulseEvent {
+  0% { box-shadow: 0 0 6px rgba(255, 59, 59, 0.3); }
+  50% { box-shadow: 0 0 18px rgba(255, 59, 59, 0.7); }
+  100% { box-shadow: 0 0 6px rgba(255, 59, 59, 0.3); }
+}
+*/
+
+  </style>
+  
+</head>
+
+<body>
+
+<header>
+  <h1>관리자 페이지</h1>
+
+  <p>❤️ "정식 등록"하시면 빨간 하트로 표시됩니다.</p>
+  <p>🎁 "이벤트 등록"하시면 지도에 선물상자가 표시됩니다.</p>
+  <p>⏰ 이벤트 기간이 종료되면 선물상자는 자동으로 사라집니다.</p>
+  <p>📞 이벤트 등록 문의 : 010-8429-5368</p>
+
+  <hr class="seller-divider">
+
+  <p style="color:#fdcb00; font-weight:bold;">
+    ※ 이벤트 등록 안내
+  </p>
+
+  <p style="font-size:13px; line-height:1.6;">
+    이벤트를 등록한 매장(사업자)은 등록한 이벤트 종료일까지<br>
+    해당 이벤트를 보고 방문한 고객에게 등록된 혜택을 제공하여야 합니다.<br><br>
+
+    이벤트 진행 중 매장 사정으로 등록된 이벤트를 임의로 변경하거나
+    종료하여 고객에게 불이익 또는 피해가 발생한 경우,
+    그에 따른 모든 책임은 이벤트를 등록한 매장(사업자)에게 있습니다.
+  </p>
+
+</header>
+
+<div class="container">
+
+  <!-- =========================
+       1️⃣ 쿠폰 관리 (맨 위)
+  ========================== -->
+  <h2>쿠폰 관리</h2>
+
+  <label for="storeFilter">매장 선택</label>
+  <select id="storeFilter">
+    <option value="all">전체</option>
+  </select>
+
+  <input
+  id="filterSearch"
+  placeholder="매장 검색"
+  onkeyup="filterStoreOptions()"
+  />
+
+  <div id="adminList"></div>
+
+  <hr>
+
+  <!-- =========================
+       2️⃣ 매장 등록
+  ========================== -->
+  <h2>📌 매장 등록</h2>
+  <button onclick="toggleAdmin()" id="adminBtn">관리자 OFF</button>
+
+  <input id="storeName" placeholder="매장명">
+  <input id="storeCategory" placeholder="해당 업종 입력 (예시) 한식">
+  <input id="storeDong" placeholder="동 입력 (예시) 방배동">
+  <input id="storeAddress" placeholder="전체주소 입력(등록된 매장 주소 참조)">
+  <input id="storePhone" placeholder="전화번호 또는 핸드폰 입력">
+  <input id="storeDiscount" placeholder="이벤트할 문구를 입력해주세요.">
+  <input id="storeWebsite" placeholder="웹사이트 URL">
+  <input id="storePassword" type="password" placeholder="매장 관리자 비밀번호 (최소 4자리)">
+
+  <button onclick="addStore('active')">매장 등록</button>
+  <button onclick="addStore('pending')">등록 대기</button>
+
+  <hr>
+
+<h2>📢 지역 티커(줄) 광고 관리</h2>
+
+<p>
+  현재 관리자 지역:
+  <strong id="tickerCurrentCity">지역 확인 중...</strong>
+</p>
+
+<div style="
+  background:#f3e8ff;
+  padding:10px;
+  border-radius:8px;
+  margin-bottom:10px;
+">
+  <strong>📢 시·군 광고</strong>
+  <p style="margin:5px 0 0; font-size:13px;">
+    아래 동 이름을 비워두면 현재 시/군 지역 전체에 광고됩니다.
+  </p>
+</div>
+
+<input
+  id="tickerText"
+  placeholder=" 해당 시·군 전역 광고 창입니다. 광고를 등록해 보세요~ ^^"
+>
+
+<input
+  id="tickerDong"
+  placeholder="해당 지역 읍·면·동 광고 창입니다. 광고를 등록해 보세요~ ^^"
+>
+
+<input
+  id="tickerUrl"
+  placeholder="광고 클릭 URL (선택사항)"
+>
+
+<button
+  onclick="addTickerAd()"
+  class="btn-add"
+>
+  📢 티커 광고 등록
+</button>
+
+<div id="tickerAdminList"></div>
+
+  <h2>📌 등록된 매장</h2>
+
+  <button onclick="filterEventStores()">🔥 이벤트만 보기</button>
+  <button onclick="renderStores()">전체보기</button>
+
+  <input
+  id="storeSearch"
+  placeholder="매장명 검색"
+  onkeyup="searchStore()"
+  />
+  <div id="storeList"></div>
+  
+</div>
+
+<script src="./js/admin.js"></script>
+</body>
+</html>

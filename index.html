@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>우동폰 - 우리동네쿠폰</title>
+
+  <!-- PWA -->
+
+  <link rel="manifest" href="./manifest.json">
+  <link rel="icon" href="./logo.png">
+  <link rel="apple-touch-icon" href="./logo.png">
+  <meta name="theme-color" content="#ff6b35">
+
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/ticker.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+
+  <style>
+    .gift-glow {
+      animation: giftPulse 1.2s infinite;
+    }
+
+    @keyframes giftPulse {
+      0% {
+        transform: scale(1);
+        filter: brightness(1);
+        text-shadow: 0 0 4px rgba(48, 43, 17, 0.4);
+      }
+
+      50% {
+        transform: scale(1.15);
+        filter: brightness(1.6);
+        text-shadow: 0 0 12px rgba(233, 173, 7, 0.678);
+      }
+
+      100% {
+        transform: scale(1);
+        filter: brightness(1);
+        text-shadow: 0 0 4px rgba(110, 95, 8, 0.4);
+      }
+    }
+
+    /* =========================
+       현재 지역 표시
+    ========================= */
+    .current-region {
+      text-align: center;
+      padding: 8px 12px;
+      margin: 0;
+      background: #fff7f2;
+      color: #891f9e;
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+  </style>
+
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+</head>
+
+<body>
+
+  <!-- =========================
+       전국 공통 헤더
+  ========================== -->
+
+  <header class="header">
+
+<div class="header-top">
+
+  <!-- 지역에 따라 JS가 자동 변경 -->
+  <h1 id="siteTitle" style="font-size: 40px; color: #ffffff;">
+  우리동네쿠폰
+ </h1>
+
+  <p class="header-subtext">
+    더 큰 혜택, 더 큰 즐거움!
+  </p>
+
+  <img src="gift.png" class="gift-box" alt="gift">
+
+  <!-- 전국 공통 광고 / 협찬 배너 -->
+  <div class="partner-links">
+
+    <!-- Sea Story -->
+    <a href="https://sea-story-3d-rhsl.netlify.app/"
+       target="_blank"
+       rel="noopener noreferrer">
+      <img
+        src="seastory-logo.png"
+        alt="Sea Story"
+        class="partner-logo">
+    </a>
+
+    <!-- Money Market -->
+    <a href="https://money-market-homepage-rhsl.netlify.app/"
+       target="_blank"
+       rel="noopener noreferrer">
+      <img
+        src="moneymarket-logo.png"
+        alt="Money Market"
+        class="partner-logo">
+    </a>
+
+    <!-- 가가샵 -->
+    <a href="https://gaga-shop.netlify.app/"
+       target="_blank"
+       rel="noopener noreferrer">
+      <img
+        src="gagashop-logo.png"
+        alt="가가샵"
+        class="partner-logo">
+    </a>
+
+  </div>
+
+</div>
+
+<!-- =========================
+     안내 문구
+========================== -->
+<div class="event-box">
+
+  <div class="event-text">
+    "등록 매장" 클릭하시면 상세 페이지를 볼 수 있어요. ^^<br>
+    "이벤트" 매장은 선물상자가 떠요. 선물상자 없으면 매장 확인 필수!
+  </div>
+
+</div>
+
+  </header>
+
+  <!-- =========================
+       현재 선택된 지역
+  ========================== -->
+
+  <div id="currentRegion" class="current-region">
+    현재 지역을 선택해주세요.
+    
+  </div>
+
+  <!-- =========================
+       지역 검색 영역
+  ========================== -->
+
+  <div class="search-container">
+
+<!-- 시·군·구 검색 -->
+<section class="search-section">
+
+  <div class="search-wrap">
+
+    <input
+      type="text"
+      id="cityInput"
+      placeholder="시·군·구를 검색하세요"
+      autocomplete="off">
+
+    <div
+      id="cityAutocompleteList"
+      class="autocomplete-list">
+    </div>
+
+  </div>
+
+  <button onclick="searchCity()">
+    지역 선택
+  </button>
+
+</section>
+
+
+<!-- 동·지역·상호명 검색 -->
+<section class="search-section">
+
+  <div class="search-wrap">
+
+    <input
+      type="text"
+      id="dongInput"
+      placeholder="동 또는 상호명 검색 (예: 후평동)"
+      autocomplete="off">
+
+    <div
+      id="autocompleteList"
+      class="autocomplete-list">
+    </div>
+
+  </div>
+
+  <button onclick="searchDong()">
+    검색
+  </button>
+
+</section>
+
+  </div>
+
+  <!-- =========================
+       내 쿠폰 조회
+       현재는 기능 유지용 영역
+  ========================== -->
+
+  <!--
+  <section class="my-coupon-section">
+    <button
+      class="coupon-btn"
+      onclick="openCouponModal()">
+      🎫 내 쿠폰 조회
+    </button>
+  </section>
+
+  <div
+    id="couponModal"
+    class="coupon-modal"
+    style="display:none;">
+
+    <div class="coupon-box">
+
+      <h3>내 쿠폰 조회</h3>
+
+      <input
+        id="couponPhone"
+        placeholder="전화번호 입력">
+
+      <button onclick="searchCoupons()">
+        조회
+      </button>
+
+      <button onclick="closeCouponModal()">
+        닫기
+      </button>
+
+      <div id="couponResult"></div>
+
+    </div>
+
+  </div>
+  -->
+
+  <!-- =========================
+       지역 통계
+  ========================== -->
+
+<section class="stats-section">
+  <!-- 이벤트 매장 -->
+  <div class="stat-box">
+<div class="stat-title">
+  🎁 이벤트
+</div>
+<div
+  class="stat-count"
+  id="eventCount">
+  0
+</div>
+
+  </div>
+  <!-- 등록 매장 -->
+  <div class="stat-box">
+<div class="stat-title">
+  🏪 등록
+</div>
+<div
+  class="stat-count"
+  id="storeCount">
+  0
+</div>
+
+  </div>
+  <!-- 미등록 매장 -->
+  <div class="stat-box">
+<div class="stat-title">
+  ⏳ 미등록
+</div>
+<div
+  class="stat-count"
+  id="pendingCount">
+  0
+</div>
+
+  </div>
+  <!-- 관리자 페이지 -->
+  <div
+    class="stat-box"
+    onclick="goAdminPage()"
+    style="cursor:pointer;">
+
+<div class="stat-title">
+  🔐 관리자
+</div>
+<div class="stat-count">
+  매장용
+</div>
+
+  </div>
+
+</section>
+
+  <!-- =========================
+       카테고리
+       선택된 동/지역 범위 안에서 필터
+  ========================== -->
+
+  <section class="category-section">
+
+<button onclick="filterCategory('전체')">
+  해당지역 전체
+</button>
+
+<button onclick="filterCategory('카페')">
+  카페
+</button>
+
+<button onclick="filterCategory('한식')">
+  한식
+</button>
+
+<button onclick="filterCategory('중식')">
+  중식
+</button>
+
+<button onclick="filterCategory('양식')">
+  양식
+</button>
+
+<button onclick="filterCategory('일식')">
+  일식
+</button>
+
+<button onclick="filterCategory('간식')">
+  간식
+</button>
+
+<button onclick="filterCategory('닭갈비')">
+  닭갈비
+</button>
+
+<button onclick="filterCategory('치킨')">
+  치킨
+</button>
+
+<button onclick="filterCategory('피자')">
+  피자
+</button>
+
+<button onclick="filterCategory('햄버거')">
+  햄버거
+</button>
+
+<button onclick="filterCategory('제과')">
+  제과
+</button>
+
+<button onclick="filterCategory('주점')">
+  주점
+</button>
+
+<button onclick="filterCategory('숙박')">
+  숙박
+</button>
+
+<button onclick="filterCategory('미용')">
+  미용
+</button>
+
+<button onclick="filterCategory('기타')">
+  기타
+</button>
+
+  </section>
+
+  <!-- =========================
+       지도
+  ========================== -->
+
+  <div id="map"></div>
+
+  <!-- =========================
+       지역별 티커 광고
+       ticker.js가 현재 지역을 확인하여
+       해당 지역 광고를 자동으로 표시
+  ========================== -->
+  
+<div id="cityTicker" class="news-ticker city-ticker"></div>
+
+<div id="dongTicker" class="news-ticker dong-ticker"></div>
+
+  <!-- =========================
+       JavaScript
+  ========================== -->
+
+  <script src="js/script.js"></script>
+
+  <script src="js/ticker.js"></script>
+
+</body>
+</html>

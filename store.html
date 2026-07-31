@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+  <title>매장 상세 | 우동폰</title>
+  <link
+    rel="stylesheet"
+    href="css/style.css"
+  >
+</head>
+<body>
+  <!-- =========================
+       상단 헤더
+  ========================== -->
+  <header class="header">
+    <h1 id="regionTitle">
+      우동폰
+    </h1>
+    <p>
+      우리동네 매장 혜택을 확인하세요!
+    </p>
+  </header>
+
+  <!-- =========================
+       매장 상세
+  ========================== -->
+  <div class="store-container">
+    <!-- 지역 표시 -->
+    <div
+      id="storeRegion"
+      class="store-region"
+    ></div>
+    <!-- 매장명 -->
+    <h2
+      id="storeName"
+    ></h2>
+    <!-- 할인 / 혜택 -->
+    <p
+      id="discount"
+    ></p>
+    <!-- 주소 -->
+    <p
+      id="storeAddress"
+    ></p>
+    <!-- 전화번호 -->
+    <p
+      id="storePhone"
+    ></p>
+    <!-- 홈페이지 -->
+    <button
+      onclick="openHomepage()"
+    >
+      홈페이지 보기
+    </button>
+
+    <!-- =========================
+         쿠폰 발급
+    ========================== -->
+    <h3>
+      🎁 쿠폰 다운로드
+    </h3>
+    <!-- 쿠폰 타입 -->
+    <div class="coupon-type">
+      <button
+        type="button"
+        onclick="selectType('store')"
+      >
+        매장 / 포장
+      </button>
+
+      <button
+        type="button"
+        onclick="selectType('delivery')"
+      >
+        배달
+      </button>
+    </div>
+
+    <!-- =========================
+         쿠폰 발급 폼
+    ========================== -->
+    <form
+      id="couponForm"
+    >
+      <input
+        type="text"
+        id="name"
+        placeholder="이름"
+        required
+      >
+      <input
+        type="text"
+        id="phone"
+        placeholder="전화번호"
+        required
+      >
+      <input
+        type="text"
+        id="address"
+        class="hidden"
+        placeholder="주소"
+      >
+      <button
+        type="submit"
+      >
+        쿠폰 발급
+      </button>
+    </form>
+
+    <!-- =========================
+         쿠폰 발급 결과
+    ========================== -->
+    <div
+      id="timer"
+    ></div>
+    <div
+      id="couponList"
+    ></div>
+  </div>
+
+  <!-- =========================
+       Store JS
+  ========================== -->
+  <script
+    src="js/store.js"
+  ></script>
+
+</body>
+
+</html>

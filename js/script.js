@@ -723,6 +723,14 @@ console.log(
         "city"
     };
 
+    // 지도 첫 화면 안내 숨기기
+    const mapGuide =
+      document.getElementById("mapGuide");
+
+    if (mapGuide) {
+      mapGuide.classList.add("hidden");
+    }
+
     localStorage.setItem(
       "currentCity",
       matchedCity

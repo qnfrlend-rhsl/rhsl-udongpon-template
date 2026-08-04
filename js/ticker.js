@@ -51,12 +51,14 @@ async function loadTickerAds() {
     // 현재 동
     // --------------------------------------------------
 
+    /*
     const dong =
       typeof currentDong !== "undefined"
-        ? String(
-            currentDong || ""
-          ).trim()
-        : "";
+       ? String(
+        currentDong || ""
+        ).trim()
+      : "";
+    */
 
     // --------------------------------------------------
     // 티커 영역
@@ -77,10 +79,12 @@ async function loadTickerAds() {
     cityTicker.innerHTML =
       '<div class="ticker-item">📢 해당 시·군 전역 광고 창입니다. 광고를 등록해 보세요~ ^^</div>';
   }
+/*
   if (dongTicker) {
     dongTicker.innerHTML =
       '<div class="ticker-item">📢 해당 지역 읍·면·동 광고 창입니다. 광고를 등록해 보세요~ ^^</div>';
   }
+*/
   TICKER_ADS = [];
   return;
 }
@@ -93,10 +97,8 @@ async function loadTickerAds() {
       new URLSearchParams({
         action:
           "getTickerAds",
-        city:
-          city,
-        dong:
-          dong
+        city: city
+        // dong: dong
       });
 
     const res =
@@ -253,12 +255,12 @@ function initTicker() {
   // 현재 동이 선택된 경우만 검색
   // ====================================================
 
+  /*
   let dongAds = [];
 
   if (
     currentDongValue &&
-    currentDongValue !==
-      "전체"
+    currentDongValue !== "전체"
   ) {
 
     const normalizedDong =
@@ -287,6 +289,7 @@ function initTicker() {
         }
       );
   }
+  */
 
   // ====================================================
   // 7. 시·군 티커 출력
@@ -306,11 +309,10 @@ function initTicker() {
   // 해당 동 광고만 표시
   // ====================================================
 
+  /*
   if (
     currentDongValue &&
-    currentDongValue !==
-      "전체"
-
+    currentDongValue !== "전체"
   ) {
 
     renderTicker(
@@ -320,12 +322,11 @@ function initTicker() {
 
   } else {
 
-    // 동을 선택하지 않았으면
-    // 동 광고 숨김
     if (dongTicker) {
       dongTicker.innerHTML = "";
     }
   }
+  */
 }
 
 
@@ -438,18 +439,12 @@ function renderTicker(
   // ====================================================
 
   ticker.innerHTML = `
-    <div
-      class="ticker-track"
-    >
-      ${tickerItems}
-      <span
-        class="ticker-separator"
-      >
-        ◆
-      </span>
-      ${tickerItems}
-    </div>
-  `;
+  <div
+    class="ticker-track"
+  >
+    ${tickerItems}
+  </div>
+`;
 }
 
 

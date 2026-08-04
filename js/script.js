@@ -517,21 +517,23 @@ function renderMarkers(
                 ${store.storeName || ""}
               </div>
               ${
-                showBadge
-                ? `
-                  <div
-                    style="
-                      position:absolute;
-                      top:-15px;
-                      left:13px;
-                      font-size:18px;
-                    "
-                  >
-                    🎁
-                  </div>
-                `
-                : ""
-              }
+  showBadge
+  ? `
+    <div class="event-gift">
+      <span class="event-gift-icon">🎁</span>
+      <div class="event-gift-tooltip">
+        <div class="event-line">🎉 EVENT 🎉</div>
+        <div class="event-text">
+          ${store.discount || "이벤트 상품"}
+        </div>
+        <div class="event-desc">
+          ${store.eventDesc || ""}
+        </div>
+      </div>
+    </div>
+  `
+  : ""
+}
             </div>
           `,
           iconSize:

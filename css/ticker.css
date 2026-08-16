@@ -48,7 +48,7 @@
 
 
 /* ======================================================
-   티커 이동 영역
+   티커 이동 영역 (하단 줄광고 속도 줄이는 곳)
 ====================================================== */
 
 .ticker-track {
@@ -57,7 +57,7 @@
   white-space: nowrap;
   width: max-content;
   animation:
-    tickerMove 30s
+    tickerMove 60s
     linear
     infinite;
 }

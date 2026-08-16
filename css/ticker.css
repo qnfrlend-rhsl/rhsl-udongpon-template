@@ -57,7 +57,7 @@
   white-space: nowrap;
   width: max-content;
   animation:
-    tickerMove 60s
+    tickerMove 50s
     linear
     infinite;
 }

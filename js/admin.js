@@ -1,4 +1,4 @@
-const GAS_URL = "https://script.google.com/macros/s/AKfycbw551aqbI179VXkRTAmmLdsVnScywsUAS4J2tbdXZEXTMXwcGXtBVO5KYqDT0_TJlXR/exec";
+const GAS_URL = "https://script.google.com/macros/s/AKfycbzhqDNBrwspaiEvHcZWCLIOP97fmB1T6InBiCgIr9EMeNYQ5499zmp_Mbl0rKakDpYV/exec";
 
 /* =========================
    🌎 현재 지역 설정
@@ -163,15 +163,7 @@ async function loadStores() {
       );
     const data =
       await res.json();
-    /*
-      기본폼 지역 필터
-
-      지역이 선택되어 있으면
-      해당 지역만 표시
-
-      지역이 없으면
-      전체 매장을 표시
-    */
+      
     allStores =
   (Array.isArray(data)
     ? data
@@ -407,19 +399,19 @@ function requireStoreOwner(id) {
    ⭐ 매장 렌더
 ========================= */
 
-function renderStores() {
+function renderStores(stores = allStores) {
   const el =
     document.getElementById(
       "storeList"
     );
-  if (!allStores.length) {
+  if (!stores.length) {
     el.innerHTML =
       "등록된 매장 없음";
     return;
   }
 
   const sortedStores =
-    [...allStores].sort(
+    [...stores].sort(
       (a, b) => {
         const aEvent =
           isEventActive(a);
@@ -530,7 +522,7 @@ function setStoreStatus(
       alert(
         "등록되었습니다"
       );
-      loadStores();
+      searchStore();
     } else {
       alert(
         "상태 변경 실패"
@@ -664,17 +656,23 @@ async function addStore(
     res.json()
   )
   .then(data => {
-    if (data.success) {
-      showMsg(
-        "등록 완료 ❤️"
-      );
-      loadStores();
-    } else {
-      alert(
-        "등록 실패"
-      );
+  if (data.success) {
+
+    showMsg(
+      "등록 완료 ❤️"
+    );
+
+    if (data.store) {
+      allStores.push(data.store);
+      renderStores([data.store]);
     }
-  })
+
+  } else {
+    alert(
+      "등록 실패"
+    );
+  }
+})
   .catch(err => {
     console.error(err);
     alert(
@@ -706,7 +704,7 @@ function deleteStore(id) {
   )
   .then(data => {
     if (data.success) {
-      loadStores();
+      searchStore();
     } else {
       alert(
         "삭제 실패"
@@ -799,7 +797,7 @@ function editStore(id) {
     )
   )
   .then(() =>
-    loadStores()
+    searchStore()
   );
 }
 
@@ -871,7 +869,7 @@ function editEvent(id) {
       alert(
         "🎁 이벤트 등록 완료"
       );
-      loadStores();
+      searchStore();
     } else {
       alert(
         "이벤트 등록 실패"
@@ -1026,86 +1024,160 @@ function filterEventStores() {
    ⭐ 매장 검색
 ========================= */
 
-function searchStore() {
+async function searchStore() {
+
   const keyword =
     document.getElementById(
       "storeSearch"
-    ).value.trim();
-  if (!keyword) {
-    renderStores();
-    return;
-  }
-  const filtered =
-    allStores.filter(
-      store =>
-        (
-          store.storeName || ""
-        ).includes(keyword)
-    );
+    )?.value.trim() || "";
+
   const el =
     document.getElementById(
       "storeList"
     );
-  if (!filtered.length) {
+
+  if (!el) return;
+
+  if (!keyword) {
     el.innerHTML =
-      "검색 결과 없음";
+      "검색어를 입력해주세요.";
     return;
   }
+
   el.innerHTML =
-    filtered.map(s => {
-      return `
-        <div class="card">
-          <b>
-            🏪 ${s.storeName}
-          </b>
-          <br>
-          📍 ${
-            s.address || "-"
-          }
-          <br>
-          📞 ${
-            s.phone || "-"
-          }
-          <br>
-          🎁 ${
-            s.discount || "-"
-          }
-          <div class="status ${
-            s.status === "active"
-              ? "active"
-              : "expired"
-          }">
-            ${
-              s.status === "active"
-                ? "운영중"
-                : "등록대기"
+    "🔍 매장 검색 중...";
+
+  try {
+
+    const res =
+      await fetch(
+        GAS_URL +
+        "?action=searchAdminStores" +
+        "&city=" +
+        encodeURIComponent(
+          currentCity
+        ) +
+        "&keyword=" +
+        encodeURIComponent(
+          keyword
+        ),
+        {
+          cache: "no-store"
+        }
+      );
+
+    const data =
+      await res.json();
+
+    const stores =
+      Array.isArray(data)
+        ? data
+        : data.data || [];
+
+    if (!stores.length) {
+      el.innerHTML =
+        "검색 결과가 없습니다.";
+      return;
+    }
+
+    allStores = stores;
+
+    el.innerHTML =
+      stores.map(s => {
+
+        const eventActive =
+          isEventActive(s);
+
+        return `
+          <div class="card">
+
+            <b>
+              🏪 ${s.storeName || "-"}
+            </b>
+
+            <br>
+
+            📍 ${
+              s.address || "-"
             }
+
+            <br>
+
+            📞 ${
+              s.phone || "-"
+            }
+
+            <br>
+
+            🎁 ${
+              s.discount || "-"
+            }
+
+            ${
+              eventActive
+                ? "<br>🔥 이벤트 진행중"
+                : ""
+            }
+
+            <div class="status ${
+              s.status === "active"
+                ? "active"
+                : "expired"
+            }">
+
+              ${
+                s.status === "active"
+                  ? "운영중"
+                  : "등록대기"
+              }
+
+            </div>
+
+            <br>
+
+            <button
+              onclick="editStore('${s.storeId}')">
+              수정
+            </button>
+
+            <button
+              onclick="editEvent('${s.storeId}')">
+              🎁 이벤트 등록
+            </button>
+
+            <br>
+
+            <button
+              onclick="deleteStore('${s.storeId}')">
+              삭제
+            </button>
+
+            <button
+              onclick="setStoreStatus('${s.storeId}','active')">
+              등록
+            </button>
+
+            <button
+              onclick="setStoreStatus('${s.storeId}','pending')">
+              등록대기
+            </button>
+
           </div>
-          <br>
-          <button
-            onclick="editStore('${s.storeId}')">
-            수정
-          </button>
-          <button
-            onclick="editEvent('${s.storeId}')">
-            🎁 이벤트 등록
-          </button>
-          <br>
-          <button
-            onclick="deleteStore('${s.storeId}')">
-            삭제
-          </button>
-          <button
-            onclick="setStoreStatus('${s.storeId}','active')">
-            등록
-          </button>
-          <button
-            onclick="setStoreStatus('${s.storeId}','pending')">
-            등록대기
-          </button>
-        </div>
-      `;
-    }).join("");
+        `;
+
+      }).join("");
+
+  } catch (err) {
+
+    console.error(
+      "매장 검색 실패:",
+      err
+    );
+
+    el.innerHTML =
+      "매장 검색 중 오류가 발생했습니다.";
+
+  }
 }
 
 /* =========================
@@ -1228,6 +1300,107 @@ function loadTickerAdminList() {
     });
 }
 
+function searchTickerAds() {
+  const keyword =
+    document.getElementById(
+      "tickerSearch"
+    )?.value.trim() || "";
+
+  const el =
+    document.getElementById(
+      "tickerAdminList"
+    );
+
+  if (!el) return;
+
+  if (!keyword) {
+    el.innerHTML =
+      "티커 광고 검색어를 입력해주세요.";
+    return;
+  }
+
+  el.innerHTML =
+    "티커 광고 검색 중...";
+
+  fetch(
+    GAS_URL +
+    "?action=getTickerAds" +
+    "&city=" +
+    encodeURIComponent(
+      currentCity
+    ) +
+    "&keyword=" +
+    encodeURIComponent(
+      keyword
+    ),
+    {
+      cache: "no-store"
+    }
+  )
+    .then(res =>
+      res.json()
+    )
+    .then(data => {
+
+      const ads =
+        Array.isArray(data)
+          ? data
+          : data.data || [];
+
+      if (!ads.length) {
+        el.innerHTML =
+          "검색된 티커 광고가 없습니다.";
+        return;
+      }
+
+      el.innerHTML =
+        ads.map(ad => `
+          <div class="card">
+            <b>
+              📢 ${ad.text || ""}
+            </b>
+            <br>
+            📍 ${
+              ad.city ||
+              currentCity
+            }
+            ${
+              ad.dong
+                ? `<br>🏠 ${ad.dong}`
+                : ""
+            }
+            ${
+              ad.url
+                ? `<br>🔗 ${ad.url}`
+                : ""
+            }
+            <br>
+            <button
+              onclick="editTickerAd('${ad.adId}')">
+              ✏️ 수정
+            </button>
+            <button
+              class="btn-delete"
+              onclick="deleteTickerAd('${ad.adId}')">
+              🗑️ 삭제
+            </button>
+          </div>
+        `).join("");
+
+    })
+    .catch(err => {
+
+      console.error(
+        "티커 광고 검색 실패:",
+        err
+      );
+
+      el.innerHTML =
+        "티커 광고 검색 중 오류가 발생했습니다.";
+
+    });
+}
+
 /* =========================
    📢 티커 광고 등록
 ========================= */
@@ -1286,16 +1459,18 @@ function addTickerAd() {
         alert(
           "📢 티커 광고 등록 완료"
         );
+        /*
         document.getElementById(
           "tickerDong"
         ).value = "";
+        */
         document.getElementById(
           "tickerText"
         ).value = "";
         document.getElementById(
           "tickerUrl"
         ).value = "";
-        loadTickerAdminList();
+        searchTickerAds();
       } else {
         alert(
           data.message ||
@@ -1321,10 +1496,8 @@ window.addEventListener(
   "load",
   async () => {
     updateAdminButton();
-    await loadStores();
     loadAdminCoupons();
-    // 📢 현재 지역 티커 광고 목록 불러오기
-    loadTickerAdminList();
+
     setInterval(
       () => {
         loadAdminCoupons();
@@ -1362,7 +1535,7 @@ function editTickerAd(adId) {
 
   const newDong =
     prompt(
-      "동 이름 (선택사항)",
+      "시 이름 (선택사항)",
       ""
     );
 
@@ -1410,7 +1583,7 @@ function editTickerAd(adId) {
         "📢 티커 광고 수정 완료"
       );
 
-      loadTickerAdminList();
+      searchTickerAds()
 
     } else {
 
@@ -1475,7 +1648,7 @@ function deleteTickerAd(adId) {
         );
 
         // 광고 목록 새로고침
-        loadTickerAdminList();
+        searchTickerAds();
 
       } else {
 

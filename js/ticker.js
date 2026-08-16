@@ -4,7 +4,7 @@
 // ======================================================
 
 const TICKER_GAS_URL =
-  "https://script.google.com/macros/s/AKfycbw551aqbI179VXkRTAmmLdsVnScywsUAS4J2tbdXZEXTMXwcGXtBVO5KYqDT0_TJlXR/exec";
+  "https://script.google.com/macros/s/AKfycbzhqDNBrwspaiEvHcZWCLIOP97fmB1T6InBiCgIr9EMeNYQ5499zmp_Mbl0rKakDpYV/exec";
 
 let TICKER_ADS = [];
 

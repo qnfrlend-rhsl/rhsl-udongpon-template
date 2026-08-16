@@ -256,6 +256,12 @@
   📢 티커(줄) 광고 등록
 </button>
 
+<input
+  id="tickerSearch"
+  placeholder="📢 티커 광고 검색"
+  oninput="searchTickerAds()"
+>
+
 <div id="tickerAdminList"></div>
 
   <h2>📌 등록된 매장</h2>
@@ -266,8 +272,9 @@
   <input
   id="storeSearch"
   placeholder="매장명 검색"
-  onkeyup="searchStore()"
-  />
+  oninput="searchStore()"
+/>
+
   <div id="storeList"></div>
   
 </div>

@@ -1,4 +1,4 @@
-const GAS_URL = "https://script.google.com/macros/s/AKfycbzhqDNBrwspaiEvHcZWCLIOP97fmB1T6InBiCgIr9EMeNYQ5499zmp_Mbl0rKakDpYV/exec";
+const GAS_URL = "https://script.google.com/macros/s/AKfycbwyqwR8t8G0pIdpJRS6M_odih_4eK1C7pKb3LVkVb0vPfwjl09xWysWiix4kdvpwFou/exec";
 
 // =========================
 // 지역 정보

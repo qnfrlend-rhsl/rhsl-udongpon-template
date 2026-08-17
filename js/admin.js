@@ -1,4 +1,4 @@
-const GAS_URL = "https://script.google.com/macros/s/AKfycbzhqDNBrwspaiEvHcZWCLIOP97fmB1T6InBiCgIr9EMeNYQ5499zmp_Mbl0rKakDpYV/exec";
+const GAS_URL = "https://script.google.com/macros/s/AKfycbwyqwR8t8G0pIdpJRS6M_odih_4eK1C7pKb3LVkVb0vPfwjl09xWysWiix4kdvpwFou/exec";
 
 /* =========================
    🌎 현재 지역 설정
@@ -1301,6 +1301,7 @@ function loadTickerAdminList() {
 }
 
 function searchTickerAds() {
+
   const keyword =
     document.getElementById(
       "tickerSearch"
@@ -1374,6 +1375,16 @@ function searchTickerAds() {
                 ? `<br>🔗 ${ad.url}`
                 : ""
             }
+            ${
+              ad.startDate
+                ? `<br>📅 ${ad.startDate}`
+                : ""
+            }
+            ${
+              ad.endDate
+                ? ` ~ ${ad.endDate}`
+                : ""
+            }
             <br>
             <button
               onclick="editTickerAd('${ad.adId}')">
@@ -1425,12 +1436,36 @@ function addTickerAd() {
     document.getElementById(
       "tickerUrl"
     )?.value.trim() || "";
+
+  const startDate =
+    document.getElementById(
+      "tickerStartDate"
+    )?.value || "";
+
+  const endDate =
+    document.getElementById(
+      "tickerEndDate"
+    )?.value || "";
   if (!text) {
     alert(
       "티커 광고 내용을 입력해주세요."
     );
     return;
   }
+
+  if (!startDate || !endDate) {
+  alert(
+    "티커 광고 시작일과 종료일을 입력해주세요."
+  );
+  return;
+}
+
+if (startDate > endDate) {
+  alert(
+    "종료일은 시작일보다 빠를 수 없습니다."
+  );
+  return;
+}
   fetch(
     GAS_URL +
     "?action=addTickerAd" +
@@ -1447,9 +1482,17 @@ function addTickerAd() {
       text
     ) +
     "&url=" +
-    encodeURIComponent(
-      url
-    )
+encodeURIComponent(
+  url
+) +
+"&startDate=" +
+encodeURIComponent(
+  startDate
+) +
+"&endDate=" +
+encodeURIComponent(
+  endDate
+)
   )
     .then(res =>
       res.json()
@@ -1470,6 +1513,15 @@ function addTickerAd() {
         document.getElementById(
           "tickerUrl"
         ).value = "";
+
+        document.getElementById(
+          "tickerStartDate"
+        ).value = "";
+
+        document.getElementById(
+          "tickerEndDate"
+        ).value = "";
+
         searchTickerAds();
       } else {
         alert(
@@ -1551,6 +1603,32 @@ function editTickerAd(adId) {
       ""
     );
 
+    const newStartDate =
+  prompt(
+    "광고 시작일 (YYYY-MM-DD)",
+    ""
+  );
+
+const newEndDate =
+  prompt(
+    "광고 종료일 (YYYY-MM-DD)",
+    ""
+  );
+
+  if (!newStartDate || !newEndDate) {
+  alert(
+    "광고 시작일과 종료일을 입력해주세요."
+  );
+  return;
+}
+
+if (newStartDate > newEndDate) {
+  alert(
+    "종료일은 시작일보다 빠를 수 없습니다."
+  );
+  return;
+}
+
   if (!newText) {
     alert(
       "티커 광고 내용을 입력해주세요."
@@ -1559,19 +1637,23 @@ function editTickerAd(adId) {
   }
 
   fetch(
-    GAS_URL +
-    "?action=updateTickerAd" +
-    "&adId=" +
-    encodeURIComponent(adId) +
-    "&city=" +
-    encodeURIComponent(currentCity) +
-    "&dong=" +
-    encodeURIComponent(newDong || "") +
-    "&text=" +
-    encodeURIComponent(newText) +
-    "&url=" +
-    encodeURIComponent(newUrl || "")
-  )
+  GAS_URL +
+  "?action=updateTickerAd" +
+  "&adId=" +
+  encodeURIComponent(adId) +
+  "&city=" +
+  encodeURIComponent(currentCity) +
+  "&dong=" +
+  encodeURIComponent(newDong || "") +
+  "&text=" +
+  encodeURIComponent(newText) +
+  "&url=" +
+  encodeURIComponent(newUrl || "") +
+  "&startDate=" +
+  encodeURIComponent(newStartDate) +
+  "&endDate=" +
+  encodeURIComponent(newEndDate)
+)
   .then(res =>
     res.json()
   )

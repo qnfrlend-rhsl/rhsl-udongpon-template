@@ -748,3 +748,17 @@ form input {
       drop-shadow(0 0 12px rgba(255, 165, 0, 0.9));
   }
 }
+
+/* 인덱스페이지에서 상단 안내글 중 선물상자 관련 코드 크기조절 */
+
+.highlight-store {
+    color: red;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.highlight-gift {
+    color: red;
+    font-size: 18px;
+    font-weight: bold;
+}

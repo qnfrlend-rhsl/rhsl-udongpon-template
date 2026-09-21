@@ -752,7 +752,7 @@ form input {
 /* 인덱스페이지에서 상단 안내글 중 선물상자 관련 코드 크기조절 */
 
 .highlight-store {
-    color: rgb(129, 2, 2);
+    color: red;
     font-size: 12px;
     font-weight: bold;
 }

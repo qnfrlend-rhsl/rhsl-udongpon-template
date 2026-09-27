@@ -148,8 +148,8 @@
 <div class="event-box">
 
   <div class="event-text">
-    " 등록 매장 "은<span class="highlight-store"> 빨간하트</span>, 클릭 시 상세 페이지를 볼 수 있어요. ^^<br>
-    " 이벤트 매장 "은 <span class="highlight-gift">선물상자</span> 표시, 선물상자가 없으면 매장 확인 필수!<br>
+    " 등록 매장 "<span class="highlight-store"> 빨간하트</span>, 클릭 시 상세 페이지를 볼 수 있어요. ^^<br>
+    " 이벤트 매장 " <span class="highlight-gift">선물상자</span>, 선물상자가 없으면 매장 확인 필수!<br>
     문의사항(문자): 010-8429-5368 하세요^^
   </div>
 
@@ -411,9 +411,21 @@
     </div>
 
     <div class="map-guide-text">
-      먼저 <strong>시·군·구를 검색</strong>해 지역을 선택해 주세요.<br>
-      그다음 <strong>동·읍·면 또는 매장명</strong>을 검색해 보세요.
-    </div>
+  먼저 <strong>시·군·구를 검색</strong>해 지역을 선택해 주세요.<br>
+  이후(선택사항) <strong>동·읍·면 또는 매장명</strong>을 검색해 보세요.
+
+  <br><br>
+
+  <img
+  src="./A5_홈화면추가_매장등록_1.png"
+  class="manual-preview"
+  alt="사용설명서"
+  onclick="document.getElementById('manualModal').style.display='flex';">
+
+<div class="manual-hint">
+  👆 사용설명서를 클릭하면 크게 볼 수 있어요
+</div>
+</div>
 
     <div class="map-guide-bottom">
       📍 우리동네 매장과 할인 혜택을 찾아보세요!
@@ -438,7 +450,72 @@
 
   <script src="js/script.js"></script>
 
-  <script src="js/ticker.js"></script>
+<script src="js/ticker.js"></script>
 
-</body>
+
+<!-- =========================
+     사용설명서 크게 보기
+========================= -->
+
+<div
+  id="manualModal"
+  style="
+    display:none;
+    position:fixed;
+    inset:0;
+    z-index:99999;
+    background:rgba(0,0,0,0.75);
+    align-items:center;
+    justify-content:center;
+    padding:10px;
+  "
+  onclick="this.style.display='none';"
+>
+
+  <div
+    style="
+      position:relative;
+      max-width:95vw;
+      max-height:95vh;
+    "
+    onclick="event.stopPropagation();"
+  >
+
+    <button
+      onclick="document.getElementById('manualModal').style.display='none';"
+      style="
+        position:absolute;
+        top:-5px;
+        right:-5px;
+        width:36px;
+        height:36px;
+        border:none;
+        border-radius:50%;
+        background:white;
+        color:#333;
+        font-size:20px;
+        font-weight:bold;
+        cursor:pointer;
+        z-index:2;
+      "
+    >✕</button>
+
+    <img
+      src="./A5_홈화면추가_매장등록_1.jpg"
+      alt="사용설명서"
+      style="
+        display:block;
+        max-width:95vw;
+        max-height:92vh;
+        width:auto;
+        height:auto;
+      "
+    >
+
+  </div>
+
+</div>
+
+
+</body
 </html>

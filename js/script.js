@@ -1178,21 +1178,6 @@ document
 
 
 // ======================================================
-// ⭐ 관리자 페이지 이동
-// ======================================================
-
-function goAdminPage() {
-  window.location.href =
-    "admin.html?city=" +
-    encodeURIComponent(
-      currentRegion
-        ? currentRegion.name
-        : ""
-    );
-}
-
-
-// ======================================================
 // 20. 초기 실행
 // ======================================================
 
@@ -1205,7 +1190,7 @@ window.addEventListener(
       currentRegion
     ) {
       document.title =
-        `${currentRegion.name} 우동폰`;
+        `${currentRegion.name} 우리동네할인/쿠폰`;
     }
 
     await loadRegions();

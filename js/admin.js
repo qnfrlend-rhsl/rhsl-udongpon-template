@@ -363,6 +363,26 @@ function requireAdmin() {
 }
 
 /* =========================
+   📢 티커 광고 전용 관리자
+========================= */
+
+function requireTickerAdmin() {
+  const pw =
+    prompt(
+      "📢 티커(줄) 광고 전용 비밀번호"
+    );
+
+  if (pw !== "rhsl1231324") {
+    alert(
+      "티커 광고 비밀번호가 틀립니다."
+    );
+    return false;
+  }
+
+  return true;
+}
+
+/* =========================
    ⭐ 매장 관리자 비밀번호
 ========================= */
 
@@ -1418,6 +1438,8 @@ function searchTickerAds() {
 
 function addTickerAd() {
   if (!requireAdmin()) return;
+  if (!requireTickerAdmin()) return;
+
   if (!currentCity) {
     alert(
       "현재 관리자 지역을 확인할 수 없습니다."
@@ -1584,6 +1606,7 @@ if (storeFilter) {
 
 function editTickerAd(adId) {
   if (!requireAdmin()) return;
+  if (!requireTickerAdmin()) return;
 
   const newDong =
     prompt(
@@ -1698,6 +1721,7 @@ if (newStartDate > newEndDate) {
 function deleteTickerAd(adId) {
 
   if (!requireAdmin()) return;
+  if (!requireTickerAdmin()) return;
 
   if (
     !confirm(

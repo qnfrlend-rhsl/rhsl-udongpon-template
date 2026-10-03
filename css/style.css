@@ -830,10 +830,10 @@ form input {
   cursor: pointer;
 }
 
-.store-register-title {
+.store-register-title {      /* 우리동네 할인매장 등록 안내 코드 */
   margin: 5px 35px 18px 0;
   color: #891f9e;
-  font-size: 23px;
+  font-size: 20px;
   font-weight: bold;
   line-height: 1.4;
   text-align: center;
@@ -846,9 +846,11 @@ form input {
   text-align: left;
 }
 
-.store-register-highlight {
+.store-register-highlight { /*매장을 가지고 계신 사업자분들을~~ 안내 코드 */
   color: #ff6b35;
-  font-weight: bold;
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
 }
 
 .store-register-list {

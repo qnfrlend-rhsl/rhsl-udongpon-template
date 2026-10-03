@@ -512,7 +512,67 @@
   </div>
 
 </div>
+<!-- =========================
+     매장 등록 안내 팝업
+========================= -->
+<div id="storeRegisterModal" class="store-register-modal">
 
+  <div class="store-register-box">
+
+    <!-- 닫기 X -->
+    <button
+      class="store-register-close"
+      onclick="closeStoreRegisterModal()"
+      aria-label="닫기"
+    >✕</button>
+
+    <div class="store-register-title">
+      🏪 우리동네 할인매장 등록 안내
+    </div>
+
+    <div class="store-register-text">
+
+      <p>
+        <span class="store-register-highlight">
+          매장을 가지고 계신 사업자분들을 위한 안내입니다.
+        </span>
+      </p>
+
+      <p>
+        우리동네 고객에게 매장을 알리고<br>
+        상품과 할인정보를 홍보해 보세요.
+      </p>
+
+      <div class="store-register-list">
+        🏪 <strong>매장 정보 등록 " 무료 "</strong><br>
+        🛍️ <strong>상품 정보 등록  " 무료 "</strong><br>
+        📍 <strong>우리동네 고객에게 매장 알리기  " 무료 "</strong><br>
+        📢 <strong>상품과 할인정보 홍보하기  " 무료 "</strong>
+      </div>
+
+      <p>
+        우동폰에서는 등록된 매장의 정보를<br>
+        우리동네 고객이 쉽게 찾아볼 수 있습니다.
+      </p>
+
+      <div class="store-register-bottom">
+        사업자 매장 등록을 원하시는 경우<br>
+        안내 내용을 확인하신 후 <strong>✕</strong>를 누르시고,<br>
+        메인 화면에 관리자(매장용)를 클릭해 주세요.<br>
+        관리자문의(문자) 010-8429-5368.
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+function closeStoreRegisterModal() {
+  document.getElementById('storeRegisterModal').style.display = 'none';
+}
+</script>
 
 </body
 </html>

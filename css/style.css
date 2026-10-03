@@ -785,3 +785,85 @@ form input {
   color: #666;
   margin-top: 5px;
 }
+
+/* =========================
+   매장 등록 안내 팝업
+========================= */
+.store-register-modal {
+  display: flex;
+  position: fixed;
+  inset: 0;
+  z-index: 100000;
+  background: rgba(0, 0, 0, 0.65);
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.store-register-box {
+  position: relative;
+  width: 100%;
+  max-width: 420px;
+  max-height: 85vh;
+  overflow-y: auto;
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 28px 22px 24px;
+  box-sizing: border-box;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+}
+
+.store-register-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 34px;
+  height: 34px;
+  border: none;
+  border-radius: 50%;
+  background: #f1f1f1;
+  color: #555;
+  font-size: 21px;
+  font-weight: bold;
+  line-height: 34px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.store-register-title {
+  margin: 5px 35px 18px 0;
+  color: #891f9e;
+  font-size: 23px;
+  font-weight: bold;
+  line-height: 1.4;
+  text-align: center;
+}
+
+.store-register-text {
+  color: #444;
+  font-size: 15px;
+  line-height: 1.8;
+  text-align: left;
+}
+
+.store-register-highlight {
+  color: #ff6b35;
+  font-weight: bold;
+}
+
+.store-register-list {
+  margin: 15px 0;
+  padding: 15px 18px;
+  background: #fff7f2;
+  border-radius: 12px;
+  line-height: 1.9;
+}
+
+.store-register-bottom {
+  margin-top: 18px;
+  padding-top: 15px;
+  border-top: 1px solid #eee;
+  color: #666;
+  font-size: 13px;
+  text-align: center;
+}

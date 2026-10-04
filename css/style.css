@@ -872,10 +872,10 @@ form input {
 
 /* Leaflet 지도 출처표시 위치 */
 .leaflet-control-attribution {
-  bottom: 29px !important;
+  bottom: 30px !important;
 }
 @media (max-width: 600px) {
   .leaflet-control-attribution {
-    bottom: 27px !important;
+    bottom: 28px !important;
   }
 }

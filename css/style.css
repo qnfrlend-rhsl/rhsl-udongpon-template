@@ -869,3 +869,14 @@ form input {
   font-size: 13px;
   text-align: center;
 }
+
+/* Leaflet 지도 출처표시 위치 */
+.leaflet-control-attribution {
+  bottom: 30px !important;
+}
+
+@media (max-width: 600px) {
+  .leaflet-control-attribution {
+    bottom: 38px !important;
+  }
+}

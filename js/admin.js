@@ -1044,160 +1044,189 @@ function filterEventStores() {
    ⭐ 매장 검색
 ========================= */
 
-async function searchStore() {
+let searchTimer = null;
+let searchRequestId = 0;
 
-  const keyword =
-    document.getElementById(
-      "storeSearch"
-    )?.value.trim() || "";
+function searchStore() {
 
-  const el =
-    document.getElementById(
-      "storeList"
-    );
+  clearTimeout(searchTimer);
 
-  if (!el) return;
+  searchTimer = setTimeout(
+    async () => {
 
-  if (!keyword) {
-    el.innerHTML =
-      "검색어를 입력해주세요.";
-    return;
-  }
+      const keyword =
+        document.getElementById(
+          "storeSearch"
+        )?.value.trim() || "";
 
-  el.innerHTML =
-    "🔍 매장 검색 중...";
+      const el =
+        document.getElementById(
+          "storeList"
+        );
 
-  try {
+      if (!el) return;
 
-    const res =
-      await fetch(
-        GAS_URL +
-        "?action=searchAdminStores" +
-        "&city=" +
-        encodeURIComponent(
-          currentCity
-        ) +
-        "&keyword=" +
-        encodeURIComponent(
-          keyword
-        ),
-        {
-          cache: "no-store"
-        }
-      );
+      if (!keyword) {
+        el.innerHTML =
+          "검색어를 입력해주세요.";
+        return;
+      }
 
-    const data =
-      await res.json();
-
-    const stores =
-      Array.isArray(data)
-        ? data
-        : data.data || [];
-
-    if (!stores.length) {
       el.innerHTML =
-        "검색 결과가 없습니다.";
-      return;
-    }
+        "🔍 매장 검색 중...";
 
-    allStores = stores;
+      const requestId =
+        ++searchRequestId;
 
-    el.innerHTML =
-      stores.map(s => {
+      try {
 
-        const eventActive =
-          isEventActive(s);
-
-        return `
-          <div class="card">
-
-            <b>
-              🏪 ${s.storeName || "-"}
-            </b>
-
-            <br>
-
-            📍 ${
-              s.address || "-"
+        const res =
+          await fetch(
+            GAS_URL +
+            "?action=searchAdminStores" +
+            "&city=" +
+            encodeURIComponent(
+              currentCity
+            ) +
+            "&keyword=" +
+            encodeURIComponent(
+              keyword
+            ),
+            {
+              cache: "no-store"
             }
+          );
 
-            <br>
+        const data =
+          await res.json();
 
-            📞 ${
-              s.phone || "-"
-            }
+        // 최신 검색이 아니면 무시
+        if (
+          requestId !==
+          searchRequestId
+        ) {
+          return;
+        }
 
-            <br>
+        const stores =
+          Array.isArray(data)
+            ? data
+            : data.data || [];
 
-            🎁 ${
-              s.discount || "-"
-            }
+        if (!stores.length) {
+          el.innerHTML =
+            "검색 결과가 없습니다.";
+          return;
+        }
 
-            ${
-              eventActive
-                ? "<br>🔥 이벤트 진행중"
-                : ""
-            }
+        allStores = stores;
 
-            <div class="status ${
-              s.status === "active"
-                ? "active"
-                : "expired"
-            }">
+        el.innerHTML =
+          stores.map(s => {
 
-              ${
-                s.status === "active"
-                  ? "운영중"
-                  : "등록대기"
-              }
+            const eventActive =
+              isEventActive(s);
 
-            </div>
+            return `
+              <div class="card">
 
-            <br>
+                <b>
+                  🏪 ${s.storeName || "-"}
+                </b>
 
-            <button
-              onclick="editStore('${s.storeId}')">
-              수정
-            </button>
+                <br>
 
-            <button
-              onclick="editEvent('${s.storeId}')">
-              🎁 이벤트 등록
-            </button>
+                📍 ${
+                  s.address || "-"
+                }
 
-            <br>
+                <br>
 
-            <button
-              onclick="deleteStore('${s.storeId}')">
-              삭제
-            </button>
+                📞 ${
+                  s.phone || "-"
+                }
 
-            <button
-              onclick="setStoreStatus('${s.storeId}','active')">
-              등록
-            </button>
+                <br>
 
-            <button
-              onclick="setStoreStatus('${s.storeId}','pending')">
-              등록대기
-            </button>
+                🎁 ${
+                  s.discount || "-"
+                }
 
-          </div>
-        `;
+                ${
+                  eventActive
+                    ? "<br>🔥 이벤트 진행중"
+                    : ""
+                }
 
-      }).join("");
+                <div class="status ${
+                  s.status === "active"
+                    ? "active"
+                    : "expired"
+                }">
 
-  } catch (err) {
+                  ${
+                    s.status === "active"
+                      ? "운영중"
+                      : "등록대기"
+                  }
 
-    console.error(
-      "매장 검색 실패:",
-      err
-    );
+                </div>
 
-    el.innerHTML =
-      "매장 검색 중 오류가 발생했습니다.";
+                <br>
 
-  }
+                <button
+                  onclick="editStore('${s.storeId}')">
+                  수정
+                </button>
+
+                <button
+                  onclick="editEvent('${s.storeId}')">
+                  🎁 이벤트 등록
+                </button>
+
+                <br>
+
+                <button
+                  onclick="deleteStore('${s.storeId}')">
+                  삭제
+                </button>
+
+                <button
+                  onclick="setStoreStatus('${s.storeId}','active')">
+                  등록
+                </button>
+
+                <button
+                  onclick="setStoreStatus('${s.storeId}','pending')">
+                  등록대기
+                </button>
+
+              </div>
+            `;
+
+          }).join("");
+
+      } catch (err) {
+
+        console.error(
+          "매장 검색 실패:",
+          err
+        );
+
+        // 최신 검색에서 발생한 오류만 표시
+        if (
+          requestId ===
+          searchRequestId
+        ) {
+          el.innerHTML =
+            "매장 검색 중 오류가 발생했습니다.";
+        }
+
+      }
+
+    },
+    300
+  );
 }
 
 /* =========================

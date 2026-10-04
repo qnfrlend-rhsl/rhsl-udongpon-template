@@ -170,7 +170,7 @@ function initMap() {
     maxZoom: 19
   }).setView(
 
-    [36.9910, 127.9259],
+    [37.8801084, 127.7497714],
     8
   );
   L.tileLayer(

@@ -874,7 +874,6 @@ form input {
 .leaflet-control-attribution {
   bottom: 30px !important;
 }
-
 @media (max-width: 600px) {
   .leaflet-control-attribution {
     bottom: 38px !important;

@@ -1200,7 +1200,7 @@ window.addEventListener(
 function goAdmin() {
     const password = prompt("관리자 비밀번호를 입력하세요.");
 
-    if (password === "132482") {
+    if (password === "8282") {
         window.location.href = "admin.html";
     } else if (password !== null) {
         alert("비밀번호가 올바르지 않습니다.");

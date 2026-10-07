@@ -195,7 +195,7 @@ if (currentCity) {
       "🏪 지역 매장:",
       allStores.length
     );
-    renderStores();
+    // renderStores();   // 검색 전 전체 매장 표시 안 함  주석을 풀면 전체 매장이 나옴 ~~~~~~
     updateStoreFilter();
   } catch (err) {
     console.error(
@@ -324,7 +324,7 @@ function toggleAdmin() {
       prompt(
         "관리자 비밀번호"
       );
-    if (pw === "132482") {
+    if (pw === "8282") {
       isAdmin = true;
       localStorage.setItem(
         "isAdmin",
@@ -348,8 +348,8 @@ function toggleAdmin() {
       "관리자 OFF 🔒"
     );
   }
-  loadStores();
-  updateAdminButton();
+  // loadStores();  //   등록된 전체 매장을 나오게 하는 코드 주석을 풀면~~~
+  // updateAdminButton();   // 등록된 전체 매장 코드의 주석을 풀 때 같이 풀면 이벤트 매장만 검색이 됨.
 }
 
 function requireAdmin() {
@@ -372,7 +372,7 @@ function requireTickerAdmin() {
       "📢 티커(줄) 광고 전용 비밀번호"
     );
 
-  if (pw !== "rhsl1231324") {
+  if (pw !== "132482") {
     alert(
       "티커 광고 비밀번호가 틀립니다."
     );
@@ -517,7 +517,7 @@ function setStoreStatus(
   storeId,
   mode
 ) {
-  if (!requireAdmin()) return;
+  if (!requireStoreOwner(storeId)) return;
   const statusValue =
     mode === "active"
       ? "active"
@@ -706,7 +706,7 @@ async function addStore(
 ========================= */
 
 function deleteStore(id) {
-  if (!requireAdmin()) return;
+  if (!requireStoreOwner(id)) return;
 
   if (    !confirm(
       "정말 삭제할까?"
@@ -784,6 +784,11 @@ function editStore(id) {
       "웹사이트",
       store.websiteUrl
     );
+  const newPassword =
+  prompt(
+    "매장 관리자 비밀번호",
+    store.storePassword || ""
+  );
   fetch(
     GAS_URL +
     "?action=updateStore" +
@@ -814,6 +819,10 @@ function editStore(id) {
     "&websiteUrl=" +
     encodeURIComponent(
       newUrl
+    ) +
+    "&storePassword=" +
+    encodeURIComponent(
+      newPassword
     )
   )
   .then(() =>

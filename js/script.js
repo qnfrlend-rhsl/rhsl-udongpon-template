@@ -1,5 +1,5 @@
 // ======================================================
-// 우동폰 기본폼 - 자동 지역 시스템
+// 체크인ON 기본폼 - 자동 지역 시스템
 // ======================================================
 
 const GAS_URL =
@@ -1190,7 +1190,7 @@ window.addEventListener(
       currentRegion
     ) {
       document.title =
-        `${currentRegion.name} 우리동네할인/쿠폰`;
+        `${currentRegion.name} 체크인ON(우리동네할인/쿠폰)`;  // 인터넷 브라우저의 탭에 표시되는 제목
     }
 
     await loadRegions();

@@ -464,7 +464,7 @@ function renderMarkers(
         status ===
         "active"
           ? "💖"
-          : "💛";
+          : "💎";  // 🩷 ❤️ 🧡 💛 💚 💙 💜 🤎 🖤 🤍 🩵 🩶
       const showBadge =
         status ===
           "active" &&
@@ -502,7 +502,7 @@ function renderMarkers(
                 style="
                   font-size:${
                     status === "active"
-                      ? 11
+                      ? 10
                       : 8
                   }px;
                   color:${

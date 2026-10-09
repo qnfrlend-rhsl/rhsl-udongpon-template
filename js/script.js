@@ -464,7 +464,11 @@ function renderMarkers(
         status ===
         "active"
           ? "💖"
-          : "💎";  // 🩷 ❤️ 🧡 💛 💚 💙 💜 🤎 🖤 🤍 🩵 🩶
+          : "💎";  // 🩷 ❤️ 🧡 💛 💚 💙 💜 🤎 🖤 🤍 🩵 🩶🎉 🎊 🎁 🎈 🪅 🥳 🎂 🍰 🧁 🎇 🎆
+
+      //💰 💵 💴 💶 💷 💸 💳 🤑 🪙 🏆 🏅 🎖️ 🎯 🎮 🕹️ 🎲 🧩 🎰 🔔 📣 📢 🪄 🔥 ⚡ 💥 🚀 🌈 🍀 🧲 🎀 🎗️ 🛍️ 🛒
+      // 👉 👈 👆 👇 👇 🫵 🖱️ 👆🏻  💕 💖 💗 💓 💞 💘 💝 💟 👑 💍💎 💠 🔷 🔹 🔶 🔸 🪙 🏆 🥇 🥈 🥉 
+
       const showBadge =
         status ===
           "active" &&
@@ -494,6 +498,12 @@ function renderMarkers(
                     0 1px 3px
                     rgba(0,0,0,0.4);
                   display:block;
+                  position:relative;
+                  top:${
+                    status === "active"
+                      ? -3      /////////////////////////////  -6으로 하면 더 위로 올라옴  빨간 하트 위로 올라오게 하는 코드 
+                      : 0
+                  }px;
                 "
               >
                 ${emoji}
@@ -517,23 +527,23 @@ function renderMarkers(
                 ${store.storeName || ""}
               </div>
               ${
-  showBadge
-  ? `
-    <div class="event-gift">
-      <span class="event-gift-icon">🎁</span>
-      <div class="event-gift-tooltip">
-        <div class="event-line">🎉 이벤트 🎉</div>
-        <div class="event-text">
-          ${store.discount || "이벤트 상품"}
-        </div>
-        <div class="event-desc">
-          ${store.eventDesc || ""}
-        </div>
-      </div>
-    </div>
-  `
-  : ""
-}
+                    showBadge
+                    ? `
+                      <div class="event-gift">
+                        <span class="event-gift-icon">🎁</span>
+                        <div class="event-gift-tooltip">
+                          <div class="event-line">🎉 이벤트 🎉</div>
+                          <div class="event-text">
+                            ${store.discount || "이벤트 상품"}
+                          </div>
+                          <div class="event-desc">
+                            ${store.eventDesc || ""}
+                          </div>
+                        </div>
+                      </div>
+                    `
+                    : ""
+                  }
             </div>
           `,
           iconSize:

@@ -171,7 +171,7 @@ function initMap() {
   }).setView(
 
     [37.8801084, 127.7497714],
-    8
+    9
   );
   L.tileLayer(
     "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
@@ -464,7 +464,7 @@ function renderMarkers(
         status ===
         "active"
           ? "💖"
-          : "💎";  // 🩷 ❤️ 🧡 💛 💚 💙 💜 🤎 🖤 🤍 🩵 🩶🎉 🎊 🎁 🎈 🪅 🥳 🎂 🍰 🧁 🎇 🎆
+          : "💛";  // 🩷 ❤️ 🧡 💛 💚 💙 💜 🤎 🖤 🤍 🩵 🩶🎉 🎊 🎁 🎈 🪅 🥳 🎂 🍰 🧁 🎇 🎆
 
       //💰 💵 💴 💶 💷 💸 💳 🤑 🪙 🏆 🏅 🎖️ 🎯 🎮 🕹️ 🎲 🧩 🎰 🔔 📣 📢 🪄 🔥 ⚡ 💥 🚀 🌈 🍀 🧲 🎀 🎗️ 🛍️ 🛒
       // 👉 👈 👆 👇 👇 🫵 🖱️ 👆🏻  💕 💖 💗 💓 💞 💘 💝 💟 👑 💍💎 💠 🔷 🔹 🔶 🔸 🪙 🏆 🥇 🥈 🥉 
@@ -491,8 +491,8 @@ function renderMarkers(
                 style="
                   font-size:${
                     status === "active"
-                      ? 18
-                      : 12
+                      ? 17
+                      : 9
                   }px;
                   text-shadow:
                     0 1px 3px

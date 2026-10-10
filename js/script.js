@@ -735,6 +735,13 @@ console.log(
         "city"
     };
 
+        // 화면 제목 변경
+    updateSiteTitle(matchedCity);
+
+    // 인터넷 브라우저 탭 제목 변경
+    document.title =
+      `${matchedCity.replace(/\s*(시|군|구)$/, "")} 체크인ON(우리동네할인/쿠폰)`;
+
     // 지도 첫 화면 안내 숨기기
     const mapGuide =
       document.getElementById("mapGuide");
@@ -1236,4 +1243,18 @@ function goAdmin() {
     } else if (password !== null) {
         alert("비밀번호가 올바르지 않습니다.");
     }
+}
+
+function updateSiteTitle(region) {
+  const regionName = document.getElementById("regionName");
+  const titleSpace = document.getElementById("titleSpace");
+
+  if (!regionName || !titleSpace) return;
+
+  const name = String(region || "")
+    .trim()
+    .replace(/\s*(시|군|구)$/, "");
+
+  regionName.textContent = name;
+  titleSpace.textContent = name ? " " : "";
 }

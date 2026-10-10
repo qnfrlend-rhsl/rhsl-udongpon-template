@@ -974,6 +974,25 @@ function openWebsite(
   url,
   status
 ) {
+  if (!url) {
+    alert(
+      "등록된 홈페이지가 없습니다."
+    );
+    return;
+  }
+
+  window.open(
+    url,
+    "_blank"
+  );
+}
+
+
+/*////////////////////////////////////// 여기에 있는 주석을 풀면 등록대기중인 매장은 상세/홈페이지를 불 수 없음.
+function openWebsite(
+  url,
+  status
+) {
   if (
     status ===
     "pending"
@@ -994,7 +1013,7 @@ function openWebsite(
     "_blank"
   );
 }
-
+*/
 async function loadRegions() {
 
   try {

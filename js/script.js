@@ -490,7 +490,7 @@ function renderMarkers(
               <span
                 style="
                   font-size:${
-                    status === "active"
+                    status === "active"     /////////////////////////  하트 크기 줄이는 코드
                       ? 17
                       : 9
                   }px;

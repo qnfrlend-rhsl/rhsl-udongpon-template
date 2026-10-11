@@ -52,7 +52,7 @@ body {
   flex-shrink: 0;
   padding: 10px 12px;
   border: none;
-  background: #891f9e;
+  background: #87119e;
   color: white;
   cursor: pointer;
 }
@@ -539,7 +539,7 @@ form input {
   position: relative;
   text-align: center;
   padding: 15px;
-  background: linear-gradient(to bottom right,#ff6b35, #87119e);
+  background: linear-gradient(to bottom right,#ff6600, #87119e);   /* ///  상단 배너 색상 코드*/
   color: white;
 }
 

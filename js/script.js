@@ -1235,6 +1235,12 @@ window.addEventListener(
   }
 );
 
+
+function goAdmin() {
+    window.location.href = "admin.html";
+}
+
+/*///////////////////    나중에 고객페이지에서 관리자페이지로 넘어갈 때 비번코드임. 주석 풀면 비번을 넣어야 함.
 function goAdmin() {
     const password = prompt("관리자 비밀번호를 입력하세요.");
 
@@ -1244,6 +1250,7 @@ function goAdmin() {
         alert("비밀번호가 올바르지 않습니다.");
     }
 }
+*/
 
 function updateSiteTitle(region) {
   const regionName = document.getElementById("regionName");

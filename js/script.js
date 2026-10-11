@@ -1236,7 +1236,7 @@ window.addEventListener(
 );
 
 
-function goAdmin() {
+function goAdmin() {   //  이 코드를 주석처리하고 밑에 있는 주석코드를 풀면 비번을 넣고 관리자페이지로 감.
     window.location.href = "admin.html";
 }
 

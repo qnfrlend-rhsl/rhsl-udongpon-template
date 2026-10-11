@@ -561,10 +561,8 @@ function setStoreStatus(
    ⭐ 매장 등록
 ========================= */
 
-async function addStore(
-  status = "active"
-) {
-  if (!requireAdmin()) return;
+async function addStore(status = "active") {
+//  if (!requireAdmin()) return;     //////  이 코드 주석을 풀면 매장등록할 때 비번 8282 넣어야 등록할 수 있음 
   const storeName =
     document.getElementById(
       "storeName"

@@ -199,7 +199,7 @@
   <!-- =========================
        2️⃣ 매장 등록
   ========================== -->
-  <h2>📌 매장 등록</h2>
+  <h2>📌 신규 매장 등록</h2>
   <!--<button onclick="toggleAdmin()" id="adminBtn">관리자 OFF</button> 주석을 풀면 로그인 버튼이 생성됨 -->
 
   <input id="storeName" placeholder="사업장명">
@@ -215,7 +215,7 @@
   >
   <!-- <input id="storePassword" type="password" placeholder="매장 관리자 비밀번호 (최소 4자리)"> 
    주석풀면 비밀번호가 감춰지는 기능을 가지고 있음 type="password" 이 코드가 화면에서 비번을 감추는 기능임)-->
-  <input id="storePassword" type="text" placeholder="매장 관리자 비밀번호 (최소 4자리)">
+  <input id="storePassword" type="text" placeholder="매장 관리자 비밀번호 (최소 4자리~이상)">
 
   <button onclick="addStore('active')">매장 등록</button>
   <button onclick="addStore('pending')">등록 대기</button>
@@ -391,5 +391,79 @@ function closeWebsiteGuide() {
   document.getElementById('websiteGuideModal').style.display = 'none';
 }
 </script>
+
+
+<!-- 매장 등록 안내 팝업 -->
+<div id="storeRegisterModal" class="store-register-modal"
+  style="display:none; position:fixed; inset:0; z-index:100000;
+  background:rgba(0,0,0,0.75); align-items:center;
+  justify-content:center; padding:10px; box-sizing:border-box;">
+
+  <div style="position:relative; width:95vw; max-width:500px;
+    max-height:90vh; overflow:auto; background:white;
+    border-radius:18px; padding:20px; box-sizing:border-box;">
+
+    <button onclick="closeStoreRegisterModal()"
+      style="position:absolute; top:8px; right:8px;
+      font-size:20px; background:white;">✕</button>
+
+    <h3 style="text-align:center; color:#ff6b35;">
+      🏪 체크인ON (우리동네 할인매장 등록 안내)
+    </h3>
+
+    
+<div style="text-align:left; font-weight:bold; font-size:12px; line-height:1.7;">
+  <div style="padding-left:22px; text-indent:-22px;">
+    1. 먼저 아래로 내려가시면 등록된 매장/이벤트 매장 검색에서 해당 매장을 검색해 주세요.
+  </div>
+  <div style="padding-left:22px; text-indent:-22px;">
+    2. 매장이 없다면 신규 매장등록을 진행하셔야 합니다. 
+  </div>
+  <div style="padding-left:22px; text-indent:-22px;">
+    3. 현재 전체 등록된 매장 비밀번호는 "1234"로 되어 있습니다. 
+    검색된 매장에서 수정버튼를 누르시고, 비밀번호 1234로 들어가셔서 등록과 비밀번호를 변경하세요. 
+    만약 등록된 매장에서 검색이 안된다면 신규 매장 등록을 하셔야 합니다.
+  </div>
+</div>
+
+
+    <p>
+      🏪 <strong>매장 등록 무료</strong><br>
+      🛍️ <strong>이벤트 등록 무료</strong><br>
+      📍 <strong>우리동네 고객에게 매장 알리기 무료</strong><br>
+      📢 <strong>매장과 할인정보 홍보하기 무료</strong>
+    </p>
+
+    <p style="font-size:13px; line-height:1.7;">
+      <strong style="color:#ff6b35;">
+        체크인ON(우리동네할인/쿠폰)이 OPEN 했어요!
+      </strong><br>
+      매장 등록과 이벤트 등록은 모두 무료입니다.
+      광고비 없이 내 가게를 알리고 우리동네 고객을 만나보세요.
+    </p>
+
+    <p style="font-size:13px; line-height:1.7;">
+      매장 등록을 원하시면 안내를 확인하신 후
+      ✕를 누르고 관리자 페이지에서 매장을 등록해 주세요.
+    </p>
+
+    <p style="text-align:center; font-size:13px;">
+      관리자 문의(문자): 010-8429-5368
+    </p>
+
+  </div>
+</div>
+
+<script>
+function closeStoreRegisterModal() {
+  document.getElementById('storeRegisterModal').style.display = 'none';
+}
+
+// 관리자 페이지에 들어오면 안내 팝업 표시
+window.addEventListener('load', function () {
+  document.getElementById('storeRegisterModal').style.display = 'flex';
+});
+</script>
+
 </body>
 </html>

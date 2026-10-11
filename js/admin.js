@@ -832,20 +832,12 @@ function editStore(id) {
    🎁 이벤트 관리
 ========================= */
 
-function editEvent(id) {
-  const eventAdminPw =
-    prompt(
-      "🎁 이벤트 관리자 비밀번호"
-    );
-  if (
-    eventAdminPw !==
-    "132482"
-  ) {
-    alert(
-      "이벤트 관리 권한 없음"
-    );
-    return;
-  }
+function editEvent(id) {     //////////// 이벤트 등록을 할 때 비번을 넣게 하려면 밑에 코드의 주석을 풀면 됨
+//  const eventAdminPw =prompt("🎁 이벤트 관리자 비밀번호");
+//  if (eventAdminPw !=="132482") {
+//    alert("이벤트 관리 권한 없음");
+//    return;
+//  }
   const store =
     allStores.find(
       s =>

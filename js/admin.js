@@ -505,9 +505,6 @@ function renderStores(stores = allStores) {
             등록대기
           </button>
         </div>
-          <p style="font-size: 9px; color: #999; margin: 2px 0 0; text-align: center;">
-  사업자등록번호: 304-17-04231 / 대표: 김상국
-  </p>
       `;
     }).join("");
 }

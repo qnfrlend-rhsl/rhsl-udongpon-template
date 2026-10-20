@@ -551,7 +551,7 @@
 
       <p style="text-align: center; font-size: 15px; font-weight: 700; margin: 10px 0;">
         <span class="store-register-highlight">
-          매장을 가지고 계신 사업자분들을 위한 안내입니다.
+          매장을 운영하시는 계신 사업자분들을 위한 안내입니다.
         </span>
       </p>
 
@@ -573,7 +573,7 @@
         알림: 체크인ON(우리동네할인/쿠폰) "OPEN" 했어요.
         </strong><br>
         <span style="font-size:12px;">
-        후평동을 시작으로 체크인ON은 "우리동네할인/쿠폰"을 곳곳으로 확대해 나가려 합니다.
+        춘천시를 시작으로 체크인ON은 "우리동네할인/쿠폰"을 곳곳으로 확대해 나가려 합니다.
         등록된 매장과 다양한 이벤트가 많아질수록 더 많은 고객이 
         "우리동네할인/쿠폰"을 보고 찾아오게 됩니다.<br>
         </span>
@@ -612,5 +612,176 @@ function closeStoreRegisterModal() {
 }
 </script>
 
+
+<!-- 체크인ON 매장 등록 안내 + 광고 팝업 시작 -->
+<div id="checkinWelcomePopup" style="display:none;"
+     role="dialog" aria-modal="true"
+     aria-labelledby="checkinWelcomeTitle">
+
+  <div class="checkin-welcome-box">
+
+    <button type="button"
+            id="checkinWelcomeClose"
+            class="checkin-welcome-close"
+            aria-label="팝업 닫기">
+      &times;
+    </button>
+
+    <div class="checkin-welcome-content">
+
+      <div class="checkin-welcome-icon">🏪</div>
+
+      <h2 id="checkinWelcomeTitle">
+        우리동네 매장을 등록해 보세요!
+      </h2>
+
+      <p class="checkin-welcome-message">
+        많은 매장이 등록될수록, 이벤트 매장이 많이질수록 우리동네 상권에 살아납니다. 활기찬 거리를 만들어 보아요. ^^
+      </p>
+
+      
+<!-- 체크인ON 홍보 이미지 슬라이드 -->
+<div id="checkinWelcomeAdArea" class="checkin-welcome-ad">
+
+  <img
+    id="checkinWelcomeSlide"
+    class="checkin-welcome-ad-image"
+    src="./메인광고_images/체크인ON_홍보1.png"
+    alt="우리동네 할인매장 홍보">
+
+</div>
+
+
+
+      <p class="checkin-welcome-bottom">
+        우리동네 매장과 주민이 함께 혜택을 나눠요!
+      </p>
+
+    </div>
+  </div>
+</div>
+
+
+<script>
+(function () {
+  'use strict';
+
+  // 홍보 이미지 2개
+  const welcomeAdImages = [
+    {
+      url: './메인광고_images/체크인ON_홍보1.png',
+      alt: '우리동네 할인매장 홍보'
+    },
+    {
+      url: './메인광고_images/체크인ON_홍보2.png',
+      alt: '매장 등록 및 이벤트 등록 무료 안내'
+    }
+  ];
+
+  const popup = document.getElementById('checkinWelcomePopup');
+  const closeButton = document.getElementById('checkinWelcomeClose');
+  const adSlide = document.getElementById('checkinWelcomeSlide');
+
+  if (!popup || !closeButton || !adSlide) {
+    return;
+  }
+
+  let currentAdIndex = 0;
+  let adTimer = null;
+  let fadeTimer = null;
+
+  // 이미지 전환
+  function showWelcomeAd(index) {
+    adSlide.style.opacity = '0';
+
+    if (fadeTimer !== null) {
+      clearTimeout(fadeTimer);
+    }
+
+    fadeTimer = setTimeout(function () {
+      adSlide.onload = function () {
+        adSlide.style.opacity = '1';
+      };
+
+      adSlide.onerror = function () {
+        adSlide.style.opacity = '1';
+        console.error('홍보 이미지를 불러오지 못했습니다.');
+      };
+
+      adSlide.src = welcomeAdImages[index].url;
+      adSlide.alt = welcomeAdImages[index].alt;
+
+      // 이미지가 이미 캐시에 있으면 투명도를 복원
+      if (adSlide.complete && adSlide.naturalWidth > 0) {
+        adSlide.style.opacity = '1';
+      }
+    }, 250);
+  }
+
+  
+  // 팝업을 열 때 첫 번째 이미지 표시
+  popup.style.display = 'flex';
+  showWelcomeAd(currentAdIndex);
+
+  // 처음에는 빠르게 이미지 전체를 한 바퀴 표시
+  const fastSlideInterval = 700;  // 0.7초간 등록된 이미지를 빠르게 보이게 하는 코드
+
+  if (welcomeAdImages.length > 1) {
+    adTimer = setInterval(function () {
+      currentAdIndex++;
+
+      if (currentAdIndex >= welcomeAdImages.length) {
+        // 모든 이미지를 한 번씩 보여준 뒤 일반 속도로 전환
+        clearInterval(adTimer);
+        adTimer = null;
+        currentAdIndex = 0;
+
+        adTimer = setInterval(function () {
+          currentAdIndex = (currentAdIndex + 1) % welcomeAdImages.length;
+          showWelcomeAd(currentAdIndex);
+        }, 4000); // 등록된 이미지를 4초간 보이게 하는 코드
+
+        return;
+      }
+
+      showWelcomeAd(currentAdIndex);
+    }, fastSlideInterval);
+  }
+
+
+  function closeWelcomePopup() {
+    popup.style.display = 'none';
+
+    if (adTimer !== null) {
+      clearInterval(adTimer);
+      adTimer = null;
+    }
+
+    if (fadeTimer !== null) {
+      clearTimeout(fadeTimer);
+      fadeTimer = null;
+    }
+  }
+
+  // 닫기 버튼
+  closeButton.addEventListener('click', closeWelcomePopup);
+
+  // 팝업 바깥쪽 클릭 시 닫기
+  popup.addEventListener('click', function (event) {
+    if (event.target === popup) {
+      closeWelcomePopup();
+    }
+  });
+
+  // ESC 키로 닫기
+  document.addEventListener('keydown', function (event) {
+    if (event.key === 'Escape' && popup.style.display === 'flex') {
+      closeWelcomePopup();
+    }
+  });
+})();
+</script>
+
+<!-- 체크인ON 매장 등록 안내 + 광고 팝업 끝 -->
 </body>
 </html>

@@ -879,3 +879,186 @@ form input {
     bottom: 30px !important;
   }
 }
+
+
+/* ==========================================
+   체크인ON 매장 등록 안내 + 광고 팝업
+========================================== */
+
+#checkinWelcomePopup {
+  position: fixed;
+  inset: 0;
+  z-index: 100001;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  box-sizing: border-box;
+  background: rgba(0, 0, 0, 0.68);
+}
+
+.checkin-welcome-box {
+  position: relative;
+  width: 100%;
+  max-width: 480px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-sizing: border-box;
+  padding: 28px 22px 22px;
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+  text-align: center;
+}
+
+.checkin-welcome-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: #f1f1f1;
+  color: #444;
+  font-size: 26px;
+  line-height: 36px;
+  cursor: pointer;
+}
+
+.checkin-welcome-close:hover {
+  background: #ff6b35;
+  color: #fff;
+}
+
+.checkin-welcome-icon {
+  margin-bottom: 10px;
+  font-size: 42px;
+}
+
+.checkin-welcome-content h2 {
+  margin: 0 25px 14px;
+  color: #891f9e;
+  font-size: 23px;
+  font-weight: 800;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+.checkin-welcome-message {
+  margin: 0 0 20px;
+  color: #444;
+  font-size: 15px;
+  line-height: 1.8;
+  word-break: keep-all;
+}
+/*............................................................. 홍보창 네모 박스를 줄이는 코드 */
+
+.checkin-welcome-ad {
+  width: 85%;
+  min-height: 180px;
+  margin: 0 auto;
+  box-sizing: border-box;
+  overflow: hidden;
+  border: 1px dashed #ccc;
+  border-radius: 12px;
+  background: #fafafa;
+}
+
+/*............................................................. 새 홍보 슬라이드 이미지 크기 조절 */
+.checkin-welcome-ad-image {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: 100%;
+  object-fit: contain;
+  margin: 0 auto;
+  transition: opacity 0.25s ease;
+}
+
+#checkinWelcomeAdPlaceholder {
+  display: flex;
+  min-height: 140px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 15px;
+  box-sizing: border-box;
+  color: #777;
+}
+
+.checkin-welcome-ad-icon {
+  font-size: 30px;
+}
+
+#checkinWelcomeAdPlaceholder p {
+  margin: 7px 0 4px;
+  color: #555;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+#checkinWelcomeAdPlaceholder small {
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+#checkinWelcomeAdLink {
+  display: block;
+  line-height: 0;
+}
+
+#checkinWelcomeAdImage {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  max-height: 48vh;
+  height: auto;
+  object-fit: contain;
+}
+
+.checkin-welcome-bottom {
+  margin: 18px 0 0;
+  color: #ff6b35;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.6;
+  word-break: keep-all;
+}
+
+/* 모바일 화면 대응 */
+@media (max-width: 600px) {
+  #checkinWelcomePopup {
+    padding: 12px;
+  }
+
+  .checkin-welcome-box {
+    max-width: 100%;
+    max-height: 88vh;
+    padding: 25px 16px 18px;
+    border-radius: 16px;
+  }
+
+  .checkin-welcome-icon {
+    font-size: 36px;
+  }
+
+  .checkin-welcome-content h2 {
+    font-size: 20px;
+    margin: 0 18px 12px;
+  }
+
+  .checkin-welcome-message {
+    font-size: 14px;
+  }
+
+  .checkin-welcome-ad,
+  #checkinWelcomeAdPlaceholder {
+    min-height: 120px;
+  }
+
+  #checkinWelcomeAdImage {
+    max-height: 45vh;
+  }
+}

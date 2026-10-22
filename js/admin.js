@@ -517,7 +517,7 @@ function setStoreStatus(
   storeId,
   mode
 ) {
-  if (!requireStoreOwner(storeId)) return;
+  // if (!requireStoreOwner(storeId)) return;  ////  주석으로 임시 개방한 코드임. 나중에 주석 풀어야 함.
   const statusValue =
     mode === "active"
       ? "active"
@@ -742,9 +742,7 @@ function deleteStore(id) {
 ========================= */
 
 function editStore(id) {
-  if (
-    !requireStoreOwner(id)
-  ) return;
+//  if (!requireStoreOwner(id)) return; // 주석걸면 매장 수정 비밀번호 확인을 임시로 건너뛰게 하는 코드.
   const store =
     allStores.find(
       s =>

@@ -813,7 +813,7 @@ form input {
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
 }
 
-.store-register-close {
+.store-register-close {   /*  우리동네 할인매장 등록 안내 팝업창 css코드 */
   position: absolute;
   top: 10px;
   right: 10px;
@@ -823,11 +823,17 @@ form input {
   border-radius: 50%;
   background: #f1f1f1;
   color: #555;
-  font-size: 21px;
-  font-weight: bold;
+  font-size: 14px;
+  font-weight: 900;  
+  -webkit-text-stroke: 0.6px currentColor;
   line-height: 34px;
   text-align: center;
   cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.store-register-close:hover {
+  color: #ff6b35;
 }
 
 .store-register-title {      /* 우리동네 할인매장 등록 안내 코드 */
@@ -1061,4 +1067,10 @@ form input {
   #checkinWelcomeAdImage {
     max-height: 45vh;
   }
+}
+
+.store-register-close:hover {
+  background: #ff6b35;
+  color: #fff;
+  transition: background 0.2s ease, color 0.2s ease;
 }

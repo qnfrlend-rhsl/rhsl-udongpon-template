@@ -689,11 +689,11 @@ form input {
     opacity: 0.3;
 }
 
-.event-gift {           /*////////////////////////////////////////// 선물상자 이동하는 코드 */
+.event-gift {           /*/////////////////////////// 선물상자 이동하는 코드 */
   position: absolute;
   top: -23px;
-  left: 10px;
-  font-size: 18px;
+  left: 9px;
+  font-size: 20px;       /*/////////////////////////// 선물상자 이동하는 크기조절 */
   cursor: pointer;
   z-index: 1000;
 }
@@ -701,7 +701,7 @@ form input {
 /* 선물상자만 깜박임 */
 .event-gift-icon {
   display: inline-block;
-  animation: eventGiftBlink 1s ease-in-out infinite;
+  animation: eventGiftBlink 1.2s ease-in-out infinite;
 }
 
 /* 이벤트 내용 */

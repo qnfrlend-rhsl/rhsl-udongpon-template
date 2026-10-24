@@ -135,8 +135,8 @@ body {
   margin-bottom: 12px;
 }
 
-.map-guide-text {
-  font-size: 14px;
+.map-guide-text {      /* 우리동네 할인 매장 찾기 밑에 선택사항 관련 크기 조절 */
+  font-size: 12px;
   line-height: 1.7;
   color: #444;
 }

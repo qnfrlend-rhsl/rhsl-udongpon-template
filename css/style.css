@@ -669,8 +669,8 @@ form input {
   margin: 3px 0;
 }
 
-.event-text {
-  font-size: 12px;
+.event-text {     /*///////////////////////////////////////////  상단 링크 밑 박스 글자 크기조절 */
+  font-size: 11px;
   font-weight: 600;
   color: #ff6b35;
   margin: 6px 0;

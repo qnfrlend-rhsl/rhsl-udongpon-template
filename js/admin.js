@@ -601,6 +601,7 @@ async function addStore(status = "active") {
     지역이 선택되어 있을 때만
     해당 지역 주소를 허용
   */
+ /*
   if (
     currentCity &&
     !address.includes(
@@ -612,6 +613,8 @@ async function addStore(status = "active") {
     );
     return;
   }
+*/
+
   const coords =
     await getCoordsFromAddress(
       address

@@ -34,6 +34,7 @@ let map = null;
 let markers = [];
 let allStores = [];
 let allCoupons = [];
+let filteredStores = [];
 
 // 자동 생성 지역 목록
 let provinceList = [];
@@ -357,6 +358,8 @@ function applyFilter() {
           currentCategory
       );
   }
+
+  filteredStores = filtered;
 
   renderMarkers(
     filtered
@@ -1264,4 +1267,96 @@ function updateSiteTitle(region) {
 
   regionName.textContent = name;
   titleSpace.textContent = name ? " " : "";
+}
+
+// 이벤트 카드 클릭
+let eventPopupStores = [];
+let eventPopupIndex = 0;
+
+function openEventPopup() {
+  eventPopupStores = filteredStores.filter(store =>
+    store.status === "active" &&
+    isEventActive(store) &&
+    store.websiteUrl &&
+    store.websiteUrl.trim() !== ""
+  );
+
+  if (eventPopupStores.length === 0) {
+    alert("현재 지역에 진행 중인 이벤트 매장이 없습니다.");
+    return;
+  }
+
+  eventPopupIndex = 0;
+
+  const popup = document.getElementById("eventPopup");
+  if (!popup) {
+    alert("이벤트 팝업 HTML이 아직 없습니다.");
+    return;
+  }
+
+  showEventPopupStore();
+  popup.style.display = "flex";
+}
+
+function showEventPopupStore() {
+  const store = eventPopupStores[eventPopupIndex];
+
+  document.getElementById("eventPopupTitle").textContent =
+    store.storeName || "이벤트 매장";
+
+/* //////////////////     이벤트 매장에서 팝업창에 이상하게 나오는 웹사이트 주소 수정하는 코드 */
+
+
+  const websiteUrl = store.websiteUrl || "";
+let mobileUrl = websiteUrl;
+
+try {
+  const url = new URL(websiteUrl);
+
+  // 네이버 블로그만 모바일 주소로 변경
+  if (url.hostname === "blog.naver.com") {
+    url.hostname = "m.blog.naver.com";
+  }
+
+  // 카카오맵은 원래 주소 유지
+  mobileUrl = url.href;
+} catch (error) {
+  console.error("이벤트 웹사이트 주소 오류:", error);
+}
+
+console.log("원본 주소:", websiteUrl);
+console.log("변환 주소:", mobileUrl);
+
+document.getElementById("eventPopupFrame").src =
+  mobileUrl || "about:blank";
+
+/*////////////////////////////// 여기에 팝업창에 이상하게 나오는 웹사이트 주소를 수정하는 코드 끝 */
+
+
+
+  document.getElementById("eventPopupCounter").textContent =
+    `${eventPopupIndex + 1} / ${eventPopupStores.length}`;
+}
+
+function prevEventStore() {
+  if (!eventPopupStores.length) return;
+
+  eventPopupIndex =
+    (eventPopupIndex - 1 + eventPopupStores.length) %
+    eventPopupStores.length;
+
+  showEventPopupStore();
+}
+
+function nextEventStore() {
+  if (!eventPopupStores.length) return;
+
+  eventPopupIndex =
+    (eventPopupIndex + 1) % eventPopupStores.length;
+
+  showEventPopupStore();
+}
+
+function closeEventPopup() {
+  document.getElementById("eventPopup").style.display = "none";
 }

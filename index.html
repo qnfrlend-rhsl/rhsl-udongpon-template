@@ -287,7 +287,7 @@
 
 <section class="stats-section">
   <!-- 이벤트 매장 -->
-  <div class="stat-box">
+  <div class="stat-box" onclick="openEventPopup()" style="cursor:pointer;">
 <div class="stat-title">
   🎁 이벤트
 </div>
@@ -786,7 +786,32 @@ function closeStoreRegisterModal() {
   });
 })();
 </script>
-
 <!-- 체크인ON 매장 등록 안내 + 광고 팝업 끝 -->
+
+
+<!-- 이벤트 매장 팝업 -->
+<div id="eventPopup" class="event-popup-overlay" style="display:none;">
+  <div class="event-popup">
+    <button type="button" class="event-popup-close" onclick="closeEventPopup()">✕</button>
+
+    <button type="button" class="event-popup-prev" onclick="prevEventStore()">❮</button>
+
+    <div id="eventPopupTitle" class="event-popup-title"></div>
+
+    <iframe
+  id="eventPopupFrame"
+  src="about:blank"
+  title="이벤트 매장 웹사이트"
+  style="width:100%; height:70vh; border:0;"
+  scrolling="auto"
+></iframe>
+
+    <button type="button" class="event-popup-next" onclick="nextEventStore()">❯</button>
+
+    <div id="eventPopupCounter" class="event-popup-counter"></div>
+  </div>
+</div>
+
+
 </body>
 </html>

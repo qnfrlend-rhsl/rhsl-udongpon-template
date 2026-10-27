@@ -7,6 +7,111 @@ const TICKER_GAS_URL =
   "https://script.google.com/macros/s/AKfycbwyqwR8t8G0pIdpJRS6M_odih_4eK1C7pKb3LVkVb0vPfwjl09xWysWiix4kdvpwFou/exec";
 
 let TICKER_ADS = [];
+let EVENT_TICKER_ADS = [];
+
+// 이벤트 매장 데이터 불러오기
+async function loadEventTickerAds() {
+  try {
+    const city =
+      typeof currentRegion !== "undefined" && currentRegion
+        ? String(currentRegion.name || "").trim()
+        : "";
+
+    if (!city) {
+      EVENT_TICKER_ADS = [];
+      return;
+    }
+
+    const params = new URLSearchParams({
+      action: "getStoreMapData",
+      city: city
+    });
+
+    const res = await fetch(
+      TICKER_GAS_URL + "?" + params.toString(),
+      { cache: "no-store" }
+    );
+
+const data = await res.json();
+const stores = Array.isArray(data) ? data : [];
+
+console.log("🔍 이벤트 매장 원본 데이터:", data);
+console.log("🔍 이벤트 매장 첫 번째 항목:", stores[0]);
+
+console.log(
+  "🔎 체크인ON 매장 API 응답:",
+  JSON.stringify(
+    stores.find(
+      store => String(store.storeId) === "1791029446731"
+    ) || null,
+    null,
+    2
+  )
+);
+
+console.log(
+  "🔎 첫 번째 매장 필드 확인:",
+  JSON.stringify(stores[0] || {}, null, 2)
+);
+
+// 👇 여기부터 추가
+console.log(
+  "🔎 매장 상태별 개수:",
+  stores.reduce((acc, store) => {
+    const key = `${store.status || "(빈값)"} / eventOn=${store.eventOn || "(빈값)"}`;
+    acc[key] = (acc[key] || 0) + 1;
+    return acc;
+  }, {})
+);
+
+console.log(
+  "🔎 이벤트 설정 매장:",
+  stores.filter(store => String(store.eventOn || "").trim() !== "")
+);
+
+// 추가 시작
+console.log(
+  "🔎 활성 매장 상세:",
+  JSON.stringify(
+    stores.filter(store => store.status === "active"),
+    null,
+    2
+  )
+);
+// 추가 끝
+// 👆 여기까지 추가
+
+EVENT_TICKER_ADS = stores.filter(store => {
+  const eventOn = String(store.eventOn || "").trim().toLowerCase();
+  const status = String(store.status || "").trim().toLowerCase();
+  const eventText = String(
+  store.eventText || store.discount || ""
+).trim();
+
+const eventStart = String(store.eventStart || "").trim();
+const eventEnd = String(store.eventEnd || "").trim();
+
+const eventEnabled =
+  ["true", "1", "yes", "y", "on"].includes(eventOn) ||
+  (
+    eventText !== "" &&
+    eventText !== "대기중" &&
+    eventStart !== "" &&
+    eventEnd !== ""
+  );
+
+  return (
+    eventEnabled &&
+    ["active", "approved", "정상", "승인"].includes(status)
+  );
+});
+
+    console.log("📍 현재 지역 이벤트 매장:", city, EVENT_TICKER_ADS);
+  } catch (err) {
+    console.error("이벤트 매장 불러오기 실패:", err);
+    EVENT_TICKER_ADS = [];
+  }
+}
 
 // ======================================================
 // 1. 티커 DOM 가져오기
@@ -88,6 +193,12 @@ async function loadTickerAds() {
   TICKER_ADS = [];
   return;
 }
+
+// --------------------------------------------------
+// 이벤트 매장 데이터 불러오기
+// --------------------------------------------------
+
+await loadEventTickerAds();
 
     // --------------------------------------------------
     // GAS 요청
@@ -295,10 +406,26 @@ function initTicker() {
   // 시·군 전체 광고만 표시
   // ====================================================
 
-  renderTicker(
-    cityTicker,
-    cityWideAds
-  );
+  const eventAds = EVENT_TICKER_ADS.map(store => ({
+  city: city,
+  dong: "",
+  text: `${store.dong || ""}-${store.storeName || ""}`,
+  url: store.websiteUrl || ""
+}));
+
+renderTicker(
+  cityTicker,
+  [
+    {
+      city: city,
+      dong: "",
+      text: "📢 해당 시 / 군 이벤트 매장 =",
+      url: ""
+    },
+    ...cityWideAds,
+    ...eventAds
+  ]
+);
 
   // ====================================================
   // 8. 동 티커 출력

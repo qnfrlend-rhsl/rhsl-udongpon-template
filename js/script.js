@@ -1302,7 +1302,7 @@ function showEventPopupStore() {
   const store = eventPopupStores[eventPopupIndex];
 
   document.getElementById("eventPopupTitle").textContent =
-    store.storeName || "이벤트 매장";
+    `${store.dong || ""} - ${store.storeName || "이벤트 매장"}`;
 
 /* //////////////////     이벤트 매장에서 팝업창에 이상하게 나오는 웹사이트 주소 수정하는 코드 */
 

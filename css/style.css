@@ -160,6 +160,39 @@ body {
   display: none;
 }
 
+
+/* 안내창 X 닫기 버튼 */
+.map-guide-close {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+
+  width: 30px;
+  height: 30px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: none;
+  border-radius: 50%;
+
+  background: #891f9e;
+  color: #fff;
+
+  font-size: 23px;
+  font-weight: 700;
+  line-height: 1;
+
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.18);
+}
+
+.map-guide-close:hover {
+  background: #6f187f;
+}
+
+
 .store-container {
   padding: 20px;
 }

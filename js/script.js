@@ -662,19 +662,70 @@ console.log(
 );
 
   const matchedCity =
-    cityList.find(
-      city =>
-        city === input
-    );
+  cityList.find(
+    city =>
+      city === input ||
+      city.replace(
+        /(특별자치도|특별자치시|특별시|광역시|도|시|군|구)$/,
+        ""
+      ) === input
+  );
 
+    
   if (!matchedCity) {
 
-    alert(
-      "등록된 지역이 없을 수 있습니다."
-    );
+    try {
+
+      const res = await fetch(
+        GAS_URL +
+        "?action=searchStores" +
+        "&keyword=" +
+        encodeURIComponent(input)
+      );
+
+      const data = await res.json();
+
+      const matchedStores =
+        Array.isArray(data) ? data : [];
+
+      if (!matchedStores.length) {
+        alert("검색 결과가 없습니다.");
+        return;
+      }
+
+      currentRegion = null;
+      currentDong = "";
+      currentCategory = "전체";
+
+      filteredStores = matchedStores;
+
+      renderMarkers(matchedStores);
+      updateStats(matchedStores);
+
+      const store = matchedStores.find(
+        item => Number(item.lat) && Number(item.lng)
+      );
+
+      if (store && map) {
+        map.setView(
+          [Number(store.lat), Number(store.lng)],
+          16,
+          { animate: true }
+        );
+      }
+
+      saveRecentSearch(input);
+
+    } catch (err) {
+
+      console.error("매장 검색 실패:", err);
+      alert("매장 검색 중 오류가 발생했습니다.");
+
+    }
 
     return;
   }
+
 
   // ======================================================
   // GAS에서 해당 지역 매장만 가져오기
@@ -833,129 +884,106 @@ console.log(
 }
 
 // ======================================================
-// 14. 동 검색 / 상호명 검색
+// 14. 동 / 주소 / 도로명 / 번지 / 매장명 검색
 // ======================================================
+
 
 function searchDong() {
   const input =
     document
-      .getElementById(
-        "dongInput"
-      )
+      .getElementById("dongInput")
       ?.value
       .trim();
+
   if (!input) {
     return;
   }
 
+  const keyword = input.toLowerCase();
+
+  // 현재 선택한 지역 안에서 검색
   const regionStores =
     currentRegion
       ? getRegionStores()
       : allStores;
-  
-    // 지역 검색
-  const matchedRegion =
-  regionStores.filter(
-    store => {
+
+  // 동 이름, 주소, 도로명, 번지, 매장명 검색
+  const matchedStores =
+    regionStores.filter(store => {
       const address =
-        store.address || "";
+        String(store.address || "").toLowerCase();
 
       const dong =
-        store.dong || "";
+        String(store.dong || "").toLowerCase();
+
+      const storeName =
+        String(store.storeName || "").toLowerCase();
 
       return (
-        isDongMatch(
-          address,
-          input
+        address.includes(keyword) ||
+        dong.includes(keyword) ||
+        storeName.includes(keyword) ||
+        normalizeDong(address).includes(
+          normalizeDong(input)
         ) ||
-        dong.includes(
+        normalizeDong(dong).includes(
           normalizeDong(input)
         )
       );
-    }
-  );
-    
-  if (
-    matchedRegion.length
-  ) {
-    currentDong =
-      normalizeDong(
-        input
-      );
-    const firstStore =
-      matchedRegion[0];
-    map.setView(
-      [
-        Number(
-          firstStore.lat
-        ),
-        Number(
-          firstStore.lng
-        )
-      ],
-      15,
-      {
-        animate:
-          true
-      }
-    );
-    applyFilter();
-    // ⭐ 동 변경 후 티커 광고 갱신
-    if (typeof updateTickerByRegion === "function") {
-      updateTickerByRegion();
-    }
-    saveRecentSearch(
-      input
-    );
+    });
+
+  if (!matchedStores.length) {
+    alert("검색 결과가 없습니다.");
     return;
   }
-  // 상호명 검색
-  const matchedStore =
-    regionStores.find(
-      store =>
-        (
-          store.storeName ||
-          ""
-        )
-        .toLowerCase()
-        .includes(
-          input.toLowerCase()
-        )
+
+  // 검색한 매장들을 지도에 표시
+  // 동 이름 검색이면 동 선택 상태 유지
+  const isDongSearch =
+    matchedStores.some(store =>
+      normalizeDong(store.dong || "") ===
+        normalizeDong(input) ||
+      isDongMatch(store.address || "", input)
     );
-  if (
-    matchedStore
-  ) {
-    currentDong =
-      "";
+
+  currentDong =
+    isDongSearch
+      ? normalizeDong(input)
+      : "";
+
+  currentCategory = "전체";
+
+  filteredStores = matchedStores;
+
+  renderMarkers(matchedStores);
+  updateStats(matchedStores);
+
+  // 검색 결과 중 좌표가 있는 첫 매장으로 이동
+  const firstStore = matchedStores.find(store =>
+    Number(store.lat) && Number(store.lng)
+  );
+
+  if (firstStore && map) {
     map.setView(
       [
-        Number(
-          matchedStore.lat
-        ),
-        Number(
-          matchedStore.lng
-        )
+        Number(firstStore.lat),
+        Number(firstStore.lng)
       ],
-      18,
-      {
-        animate:
-          true
-      }
+      16,
+      { animate: true }
     );
-    renderMarkers(
-      [
-        matchedStore
-      ]
-    );
-    saveRecentSearch(
-      input
-    );
-    return;
   }
-  alert(
-    "검색 결과가 없습니다."
-  );
+
+  saveRecentSearch(input);
+
+  if (typeof updateTickerByRegion === "function") {
+    updateTickerByRegion();
+  }
+
+  console.log("🔎 검색어:", input);
+  console.log("🏪 검색 결과:", matchedStores.length);
 }
+
 
 // ======================================================
 // 15. 카테고리 필터

@@ -421,6 +421,15 @@
 
   <!-- 지도 첫 화면 안내 -->
   <div id="mapGuide" class="map-guide">
+
+    <button
+      type="button"
+      class="map-guide-close"
+      onclick="document.getElementById('mapGuide').classList.add('hidden')"
+      aria-label="안내창 닫기">
+      ×
+    </button>
+    
     <div class="map-guide-title">
       🗺️ 우리동네 할인 매장 찾기!
     </div>

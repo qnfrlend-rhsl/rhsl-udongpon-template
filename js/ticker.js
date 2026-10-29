@@ -9,6 +9,47 @@ const TICKER_GAS_URL =
 let TICKER_ADS = [];
 let EVENT_TICKER_ADS = [];
 
+// 이벤트 날짜 판독
+function parseEventDate(value, isEnd = false) {
+  if (!value) return null;
+
+  const text = String(value).trim();
+  if (!text) return null;
+
+  // 시간까지 포함된 날짜는 기존 시간 유지
+  if (/^\d{4}-\d{2}-\d{2}T/i.test(text)) {
+    const date = new Date(text);
+    return isNaN(date.getTime()) ? null : date;
+  }
+
+  // 20261029, 2026-10-29, 2026.10.29, 2026/10/29 지원
+  const normalized = text.replace(/[./]/g, "-").replace(/\s/g, "");
+  const match = normalized.match(/^(\d{4})-?(\d{2})-?(\d{2})$/);
+
+  if (!match) return null;
+
+  const year = Number(match[1]);
+  const month = Number(match[2]) - 1;
+  const day = Number(match[3]);
+
+  const date = new Date(year, month, day);
+
+  if (
+    date.getFullYear() !== year ||
+    date.getMonth() !== month ||
+    date.getDate() !== day
+  ) {
+    return null;
+  }
+
+  if (isEnd) {
+    date.setHours(23, 59, 59, 999);
+  }
+
+  return date;
+}
+
+
 // 이벤트 매장 데이터 불러오기
 async function loadEventTickerAds() {
   try {
@@ -85,23 +126,24 @@ EVENT_TICKER_ADS = stores.filter(store => {
   const eventOn = String(store.eventOn || "").trim().toLowerCase();
   const status = String(store.status || "").trim().toLowerCase();
   const eventText = String(
-  store.eventText || store.discount || ""
-).trim();
+    store.eventText || store.discount || ""
+  ).trim();
 
-const eventStart = String(store.eventStart || "").trim();
-const eventEnd = String(store.eventEnd || "").trim();
+  const eventStart = parseEventDate(store.eventStart);
+  const eventEnd = parseEventDate(store.eventEnd, true);
+  const now = Date.now();
 
-const eventEnabled =
-  ["true", "1", "yes", "y", "on"].includes(eventOn) ||
-  (
-    eventText !== "" &&
-    eventText !== "대기중" &&
-    eventStart !== "" &&
-    eventEnd !== ""
-  );
+  const eventEnabled = true;
+
+  const withinEventPeriod =
+    eventStart !== null &&
+    eventEnd !== null &&
+    now >= eventStart.getTime() &&
+    now <= eventEnd.getTime();
 
   return (
     eventEnabled &&
+    withinEventPeriod &&
     ["active", "approved", "정상", "승인"].includes(status)
   );
 });

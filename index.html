@@ -801,6 +801,9 @@ function closeStoreRegisterModal() {
 <!-- 이벤트 매장 팝업 -->
 <div id="eventPopup" class="event-popup-overlay" style="display:none;">
   <div class="event-popup">
+
+    <div class="event-popup-heading">🎁 이벤트 매장 광고!</div>
+
     <button type="button" class="event-popup-close" onclick="closeEventPopup()">✕</button>
 
     <button type="button" class="event-popup-prev" onclick="prevEventStore()">❮</button>
@@ -811,9 +814,9 @@ function closeStoreRegisterModal() {
   id="eventPopupFrame"
   src="about:blank"
   title="이벤트 매장 웹사이트"
-  style="width:100%; height:70vh; border:0;"
+  style="width:100%; height:55vh; border:0;"      
   scrolling="auto"
-></iframe>
+></iframe>  <!-- ////////////   "width:100%; height:45vh; border:0;" 팝업창 크기 조절 코드 -->
 
     <button type="button" class="event-popup-next" onclick="nextEventStore()">❯</button>
 

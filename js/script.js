@@ -41,6 +41,9 @@ let provinceList = [];
 let cityList = [];
 let dongList = [];
 
+let regionsLoaded = false;
+let regionsLoading = null;
+
 // ======================================================
 // ⭐ 지역 데이터 자동 생성
 // Google Sheets의 매장 주소를 기준으로 자동 생성
@@ -646,7 +649,15 @@ async function searchCity() {
       ?.value
       .trim();
 
-  if (!input) {
+    if (!input) {
+    return;
+  }
+
+  // 지역 목록 로딩 완료 대기
+  const loaded = await loadRegions();
+
+  if (!loaded || !cityList.length) {
+    alert("지역 목록을 불러오지 못했습니다. 잠시 후 다시 시도해 주세요.");
     return;
   }
 
@@ -1056,81 +1067,64 @@ function openWebsite(
 
 async function loadRegions() {
 
-  try {
+  if (regionsLoaded) {
+    return true;
+  }
 
-    const res =
-      await fetch(
-        GAS_URL +
-        "?action=getRegions"
+  if (regionsLoading) {
+    return regionsLoading;
+  }
+
+  regionsLoading = (async () => {
+
+    try {
+
+      const res = await fetch(
+        GAS_URL + "?action=getRegions"
       );
 
-    const data =
-      await res.json();
-
-    const regions =
-  Array.isArray(data)
-    ? data
-    : [];
-
-cityList =
-  regions
-    .map(
-      region =>
-        String(
-          region.city || ""
-        ).trim()
-    )
-    .filter(
-      city =>
-        city !== ""
-    );
-
-console.log(
-  "📍 자동 지역 목록:",
-  cityList
-);
-
-    // ======================================================
-    // 지역 목록에서 시·군·구 이름 자동 생성
-    // ======================================================
-
-    cityList =
-      regions
-        .map(
-          region =>
-            String(
-              region.city || ""
-            ).trim()
-        )
-        .filter(
-          city =>
-            city !== ""
+      if (!res.ok) {
+        throw new Error(
+          "지역 목록 요청 실패: HTTP " + res.status
         );
+      }
 
-    console.log(
-      "📍 지역 목록:",
-      regions
-    );
+      const data = await res.json();
 
-    console.log(
-      "🏙️ 등록된 지역 수:",
-      regions.length
-    );
+      const regions =
+        Array.isArray(data) ? data : [];
 
-    console.log(
-      "🏙️ 검색 가능한 시·군·구:",
-      cityList
-    );
+      cityList =
+        regions
+          .map(region =>
+            String(region.city || "").trim()
+          )
+          .filter(city => city !== "");
 
-  }
-  catch (err) {
+      console.log("📍 자동 지역 목록:", cityList);
+      console.log("📍 지역 목록:", regions);
+      console.log("🏙️ 등록된 지역 수:", regions.length);
+      console.log("🏙️ 검색 가능한 시·군·구:", cityList);
 
-    console.error(
-      "지역 목록 로드 실패:",
-      err
-    );
+      regionsLoaded = true;
 
-  }
+      return true;
+
+    } catch (err) {
+
+      console.error("지역 목록 로드 실패:", err);
+
+      return false;
+
+    } finally {
+
+      regionsLoading = null;
+
+    }
+
+  })();
+
+  return regionsLoading;
 
 }
 

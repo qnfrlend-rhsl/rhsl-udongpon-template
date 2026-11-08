@@ -911,11 +911,11 @@ form input {
 
 /* Leaflet 지도 출처표시 위치 */
 .leaflet-control-attribution {
-  bottom: 15px !important;  /* Leaflet 지도 출처표시 위치를 위, 아래로 움직이는 코드 */
+  bottom: 15px !important;  /* Leaflet 지도 출처표시 위치를 위, 아래로 움직이는 코드(데스크탑 조절) */
 }
 @media (max-width: 600px) {
   .leaflet-control-attribution {
-    bottom: 18px !important;
+    bottom: 18px !important; /* Leaflet 지도 출처표시 위치를 위, 아래로 움직이는 코드(스마트폰 조절) */
   }
 }
 

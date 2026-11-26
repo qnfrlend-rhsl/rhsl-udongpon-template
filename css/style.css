@@ -731,10 +731,45 @@ form input {
   z-index: 1000;
 }
 
-/* 선물상자만 깜박임 */
+/* 선물상자 콩콩 뛰는 것과 360도 회전, 그네처럼 좌우 움직임 코드 */
 .event-gift-icon {
   display: inline-block;
-  animation: eventGiftBlink 1.2s ease-in-out infinite;
+  font-size: 20px;
+  animation: eventGiftBounceRotate 3.0s ease-in-out infinite;
+}
+
+@keyframes eventGiftBounceRotate {
+  0%, 10%, 20%, 30%, 40%, 50% {
+    transform: translateY(0) rotate(0deg);
+  }
+
+  5%, 15%, 25%, 35%, 45%  {   /* 콩콩 뛰는 속도 */
+    transform: translateY(-10px) rotate(0deg);  /* 더 높게 뛰기: -7px → -10px */
+  }
+
+  60% {
+    transform: translateY(0) rotate(0deg);
+  }
+
+  78% { /* 360도 회전하는 코드 */
+  transform: translateY(0) rotate(360deg);
+}
+
+84% {
+  transform: translateY(0) rotate(380deg);
+}
+
+90% {
+  transform: translateY(0) rotate(340deg);
+}
+
+95% {
+  transform: translateY(0) rotate(375deg);
+}
+
+100% {
+  transform: translateY(0) rotate(345deg);
+}
 }
 
 /* 이벤트 내용 */

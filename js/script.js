@@ -497,7 +497,7 @@ function renderMarkers(
                 style="
                   font-size:${
                     status === "active"     /////////////////////////  하트 크기 줄이는 코드
-                      ? 17
+                      ? 14
                       : 10
                   }px;
                   text-shadow:
@@ -521,6 +521,11 @@ function renderMarkers(
                       ? 10
                       : 8
                   }px;
+                  font-weight:${
+                    status === "active"
+                    ? "bold"
+                    : "normal"
+                    };
                   color:${
                     status === "active"
                       ? "#a11000"

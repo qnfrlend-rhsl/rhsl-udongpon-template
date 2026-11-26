@@ -848,12 +848,12 @@ function editEvent(id) {     //////////// 이벤트 등록을 할 때 비번을 
   if (!store) return;
   const eventStart =
     prompt(
-      "이벤트 시작일 (YYYY-MM-DD)",
+      "이벤트 시작일 (예:2026-11-25)",
       store.eventStart || ""
     );
   const eventEnd =
     prompt(
-      "이벤트 종료일 (YYYY-MM-DD)",
+      "이벤트 종료일 (예:2026-12-31)",
       store.eventEnd || ""
     );
   const eventText =
